@@ -1,5 +1,6 @@
 package hk.hku.cs.myapplication;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +24,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         return new CourseViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         Course course = courseList.get(position);
         holder.courseNameTextView.setText(course.getCourseName());
         holder.courseTimeTextView.setText(course.getCourseTime() + " - " + course.getCourseLocation());
+
     }
 
     @Override
@@ -38,6 +41,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     static class CourseViewHolder extends RecyclerView.ViewHolder {
         TextView courseNameTextView;
         TextView courseTimeTextView;
+
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);

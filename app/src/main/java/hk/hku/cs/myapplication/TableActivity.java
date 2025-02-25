@@ -1,0 +1,103 @@
+package hk.hku.cs.myapplication;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class TableActivity extends AppCompatActivity {
+
+    private TableLayout tableLayout;
+    private Button switchButton;
+    private List<Course> courseList;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_table);
+
+        // 初始化视图
+        tableLayout = findViewById(R.id.tableLayout);
+        switchButton = findViewById(R.id.switchButton);
+
+        // 初始化默认课程表
+        courseList = new ArrayList<>();
+        courseList.add(new Course("Math", "09:00 AM", "Room 101", "Mon"));
+        courseList.add(new Course("Science", "10:00 AM", "Room 102", "Tue"));
+        courseList.add(new Course("English", "01:00 PM", "Room 104", "Thur"));
+        courseList.add(new Course("Physics", "02:00 PM", "Room 105", "Fri"));
+
+        // 设置表格布局
+        updateTableLayout();
+
+        // 切换按钮点击事件
+        switchButton.setOnClickListener(v -> {
+            Intent intent = new Intent(TableActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void updateTableLayout() {
+        tableLayout.removeAllViews(); // 清空表格
+
+        // 按天分组
+        Map<String, Map<String, Course>> coursesByDayAndTime = new HashMap<>();
+        for (Course course : courseList) {
+            String day = course.getDay();
+            String time = course.getCourseTime();
+            if (!coursesByDayAndTime.containsKey(day)) {
+                coursesByDayAndTime.put(day, new HashMap<>());
+            }
+            coursesByDayAndTime.get(day).put(time, course);
+        }
+
+        // 定义时间和星期几的顺序
+        String[] times = {"09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "02:00 PM"};
+        String[] days = {"Mon", "Tue", "Wed", "Thur", "Fri", "Sat"};
+
+        // 添加表头（星期几）
+        TableRow headerRow = new TableRow(this);
+        addTextViewToRow(headerRow, "Time"); // 第一列为时间
+        for (String day : days) {
+            addTextViewToRow(headerRow, day);
+        }
+        tableLayout.addView(headerRow);
+
+        // 添加课程数据
+        for (String time : times) {
+            TableRow row = new TableRow(this);
+            addTextViewToRow(row, time); // 第一列为时间
+
+            for (String day : days) {
+                if (coursesByDayAndTime.containsKey(day) && coursesByDayAndTime.get(day).containsKey(time)) {
+                    Course course = coursesByDayAndTime.get(day).get(time);
+                    addTextViewToRow(row, course.getCourseName() + "\n" + course.getCourseLocation());
+                } else {
+                    addTextViewToRow(row, ""); // 空白单元格
+                }
+            }
+            tableLayout.addView(row);
+        }
+    }
+
+    private void addTextViewToRow(TableRow row, String text) {
+        TextView textView = new TextView(this);
+        textView.setText(text);
+        textView.setPadding(16, 16, 16, 16);
+        textView.setTextSize(12);
+
+        // 相同列宽
+        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1);
+        textView.setLayoutParams(layoutParams);
+
+        row.addView(textView);
+    }
+}

@@ -1,6 +1,8 @@
 package hk.hku.cs.myapplication;
 
+import android.app.ListActivity;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +24,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private Button switchButton;
     private CourseAdapter courseAdapter;
     private List<Course> courseList;
     private String selectedTime = ""; // 保存用户选择的时间
@@ -32,16 +36,25 @@ public class MainActivity extends AppCompatActivity {
 
         // 初始化 RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
+        switchButton = findViewById(R.id.switchButton);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // 初始化默认课程表
         courseList = new ArrayList<>();
-        courseList.add(new Course("Math", "09:00 AM", "Room 101"));
-        courseList.add(new Course("Science", "10:00 AM", "Room 102"));
+        courseList.add(new Course("Math", "09:00 AM", "Room 101", "Monday"));
+        courseList.add(new Course("Science", "10:00 AM", "Room 102", "Tuesday"));
+        courseList.add(new Course("English", "01:00 PM", "Room 104", "Thursday"));
+        courseList.add(new Course("Physics", "02:00 PM", "Room 105", "Friday"));
 
         // 设置适配器
         courseAdapter = new CourseAdapter(courseList);
         recyclerView.setAdapter(courseAdapter);
+
+        // 切换按钮点击事件
+        switchButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TableActivity.class);
+            startActivity(intent);
+        });
 
         for (Course course : courseList) {
             Log.d("CourseData", "Name: " + course.getCourseName() + ", Time: " + course.getCourseTime());
@@ -60,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         Button selectTimeButton = dialogView.findViewById(R.id.selectTimeButton);
         TextView selectedTimeTextView = dialogView.findViewById(R.id.selectedTimeTextView);
         EditText courseLocationEditText = dialogView.findViewById(R.id.courseLocationEditText);
+        Spinner daySpinner = dialogView.findViewById(R.id.daySpinner);
 
         // 时间选择按钮点击事件
         selectTimeButton.setOnClickListener(v -> showTimePicker(selectedTimeTextView));
@@ -73,10 +87,11 @@ public class MainActivity extends AppCompatActivity {
                     String courseName = courseNameEditText.getText().toString();
                     String courseTime = selectedTime;
                     String courseLocation = courseLocationEditText.getText().toString();
+                    String day = daySpinner.getSelectedItem().toString();
 
                     // 添加新课程
                     if (!courseName.isEmpty() && !courseTime.isEmpty() && !courseLocation.isEmpty()) {
-                        courseList.add(new Course(courseName, courseTime, courseLocation));
+                        courseList.add(new Course(courseName, courseTime, courseLocation, day));
                         courseAdapter.notifyDataSetChanged(); // 通知适配器数据已更新
                     }
                 })

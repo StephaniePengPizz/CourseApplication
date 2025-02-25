@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/course_name"
-        android:textSize="18sp"
+        android:textSize="8sp"
         android:textStyle="bold" />
 
     <TextView
@@ -18,6 +18,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/course_time_location"
-        android:textSize="14sp" />
+        android:textSize="8sp" />
+
+    <TextView
+        android:id="@+id/courseLocationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/course_time_location"
+        android:textSize="8sp" />
 
 </LinearLayout>

@@ -5,7 +5,7 @@ public class Course {
     private String courseLocation;
     private String day;
 
-    public Course(String courseName, String courseTime, String courseLocation) {
+    public Course(String courseName, String courseTime, String courseLocation, String day) {
         this.courseName = courseName;
         this.courseTime = courseTime;
         this.courseLocation = courseLocation;
