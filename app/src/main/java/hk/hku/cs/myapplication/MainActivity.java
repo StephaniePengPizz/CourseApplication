@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -74,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
         TextView selectedTimeTextView = dialogView.findViewById(R.id.selectedTimeTextView);
         EditText courseLocationEditText = dialogView.findViewById(R.id.courseLocationEditText);
         Spinner daySpinner = dialogView.findViewById(R.id.daySpinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.days_of_week,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        daySpinner.setAdapter(adapter);
 
         // 时间选择按钮点击事件
         selectTimeButton.setOnClickListener(v -> showTimePicker(selectedTimeTextView));

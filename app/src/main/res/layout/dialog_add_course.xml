@@ -5,13 +5,15 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- 课程名称输入框 -->
     <EditText
         android:id="@+id/courseNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Course Name"
-        android:inputType="text"/>
+        android:inputType="text" />
 
+    <!-- 时间选择按钮 -->
     <Button
         android:id="@+id/selectTimeButton"
         android:layout_width="match_parent"
@@ -19,7 +21,7 @@
         android:text="Select Course Time"
         android:layout_marginTop="8dp" />
 
-    <!-- View Selected Time -->
+    <!-- 显示已选择的时间 -->
     <TextView
         android:id="@+id/selectedTimeTextView"
         android:layout_width="match_parent"
@@ -27,6 +29,7 @@
         android:text="Selected Time: None"
         android:layout_marginTop="8dp" />
 
+    <!-- 课程地点输入框 -->
     <EditText
         android:id="@+id/courseLocationEditText"
         android:layout_width="match_parent"
@@ -34,9 +37,19 @@
         android:hint="Course Location"
         android:layout_marginTop="8dp" />
 
+    <!-- 星期几选择器 -->
     <Spinner
         android:id="@+id/daySpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
+    <!-- 星期几标签 -->
+    <TextView
+        android:id="@+id/courseDayTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Course Day"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>
