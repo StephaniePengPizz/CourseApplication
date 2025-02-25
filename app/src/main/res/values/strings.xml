@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">My Timetable</string>
+    <string name="course_math">Math 101</string>
+    <string name="time_day">Time/Day</string>
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thursday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="_9_00_am">9:00 AM</string>
+</resources>

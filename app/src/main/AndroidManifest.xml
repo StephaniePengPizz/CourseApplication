@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="hk.hku.cs.myapplication">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.MyTimetable">
+
+        <!-- Main Activity that starts the app -->
+        <activity
+            android:name="hk.hku.cs.myapplication.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MyTimetable">
+            <!-- This is the entry point of the app -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
