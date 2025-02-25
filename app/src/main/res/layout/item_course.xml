@@ -9,7 +9,7 @@
         android:id="@+id/courseNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Course Name"
+        android:text="@string/course_name"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -17,7 +17,7 @@
         android:id="@+id/courseTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Course Time - Location"
+        android:text="@string/course_time_location"
         android:textSize="14sp" />
 
 </LinearLayout>

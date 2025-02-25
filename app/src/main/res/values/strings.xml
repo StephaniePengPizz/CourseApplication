@@ -8,4 +8,6 @@
     <string name="thursday">Thu</string>
     <string name="friday">Fri</string>
     <string name="_9_00_am">9:00 AM</string>
+    <string name="course_name">Course Name</string>
+    <string name="course_time_location">Course Time - Location</string>
 </resources>
