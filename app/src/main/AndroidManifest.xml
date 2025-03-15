@@ -23,6 +23,7 @@
         <activity android:name=".activities.MatchResultActivity" android:exported="false" />
         <activity android:name=".activities.ProfileActivity" android:exported="false" />
         <activity android:name=".activities.EditProfileActivity" android:exported="false" />
+
     </application>
 
 </manifest>
