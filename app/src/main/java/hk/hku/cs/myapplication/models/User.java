@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class User implements Serializable {
-    private String name; // 用户姓名
-    private List<Course> courseList; // 用户的课程列表
+    private String name;
+    private List<Course> courseList;
 
     public User(String name, List<Course> courseList) {
         this.name = name;
@@ -14,10 +14,6 @@ public class User implements Serializable {
 
     public String getName() {
         return name;
-    }
-
-    public List<Course> getCourseList() {
-        return courseList;
     }
 
     @Override

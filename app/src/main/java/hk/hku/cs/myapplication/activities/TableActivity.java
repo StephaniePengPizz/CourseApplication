@@ -7,6 +7,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,12 +17,14 @@ import java.util.Map;
 
 import hk.hku.cs.myapplication.models.Course;
 import hk.hku.cs.myapplication.R;
+import hk.hku.cs.myapplication.utils.NavigationUtils;
 
 public class TableActivity extends AppCompatActivity {
 
     private TableLayout tableLayout;
     private Button switchButton;
     private List<Course> courseList;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,11 @@ public class TableActivity extends AppCompatActivity {
             Intent intent = new Intent(TableActivity.this, MainActivity.class);
             startActivity(intent);
         });
+
+        // 初始化底部导航栏
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));
+
     }
 
     private void updateTableLayout() {

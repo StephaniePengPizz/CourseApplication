@@ -51,8 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // 初始化底部导航栏
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(NavigationUtils.getNavListener(this));
-
+        bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));
         // 根据当前 Activity 设置选中项
         bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
     }
