@@ -10,6 +10,9 @@
     <string name="_9_00_am">9:00 AM</string>
     <string name="course_name">Course Name</string>
     <string name="course_time_location">Course Time - Location</string>
+    <string name="back_button_description">Back</string>
+    <string name="back">Back</string>
+    <string name="match_results">Match Results</string>
     <string-array name="days_of_week">
         <item>Monday</item>
         <item>Tuesday</item>

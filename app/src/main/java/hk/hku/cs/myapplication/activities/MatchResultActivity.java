@@ -1,6 +1,10 @@
 package hk.hku.cs.myapplication.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +24,7 @@ public class MatchResultActivity extends AppCompatActivity {
     private RecyclerView matchResultRecyclerView;
     private UserAdapter matchResultAdapter;
     private List<User> matchResultList;
-    private BottomNavigationView bottomNavigationView;
+    private Button backButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +32,18 @@ public class MatchResultActivity extends AppCompatActivity {
 
         // 初始化视图
         matchResultRecyclerView = findViewById(R.id.matchResultRecyclerView);
+        backButton = findViewById(R.id.backButton);
+        
+        // 设置返回按钮的点击事件
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 返回到 MatchActivity
+                Intent intent = new Intent(MatchResultActivity.this, MatchActivity.class);
+                startActivity(intent);
+                finish(); // 结束当前 Activity
+            }
+        });
 
         // 初始化数据
         matchResultList = new ArrayList<>();

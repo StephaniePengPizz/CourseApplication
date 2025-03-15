@@ -4,18 +4,17 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
-
     <!-- 标题 -->
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Match Results"
+        android:text="@string/match_results"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/purple_800"
         android:layout_marginBottom="24dp"
-        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true" />
 
     <!-- 匹配结果列表 -->
@@ -23,7 +22,19 @@
         android:id="@+id/matchResultRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/titleTextView"/>
+        android:layout_below="@id/titleTextView"
+        android:layout_marginBottom="16dp"/>
 
+    <!-- 返回按钮 -->
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/back_button_description" />
 
 </RelativeLayout>
