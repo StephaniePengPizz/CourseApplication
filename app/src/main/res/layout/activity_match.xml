@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- 切换按钮 -->
-    <Button
-        android:id="@+id/switchButton"
+    <!-- 标题 -->
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Switch to Table View"
-        android:layout_gravity="center_horizontal"
+        android:text="Your Course Schedule"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_800"
         android:layout_marginTop="80dp" />
 
-    <!-- 课程表列表 -->
+    <!-- 课程列表 -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/CourseRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/switchButton"
-        android:layout_above="@id/addCourseButton"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_weight="1"
+        android:layout_marginBottom="24dp" />
 
-    <!-- 添加课程按钮 -->
+    <!-- 匹配按钮 -->
     <Button
-        android:id="@+id/addCourseButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/matchButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Course"
-        android:layout_above="@id/bottom_navigation"
-        android:layout_centerHorizontal="true"
+        android:text="Find Matches"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/purple_500"
+        android:padding="16dp"
         android:layout_marginBottom="16dp" />
 
     <!-- 底部导航栏 -->
@@ -43,4 +45,4 @@
         android:background="?android:attr/windowBackground"
         app:menu="@menu/bottom_navigation_menu" />
 
-</RelativeLayout>
+</LinearLayout>

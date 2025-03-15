@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 课程表 -->
+    <item
+        android:id="@+id/navigation_course"
+        android:icon="@drawable/ic_course"
+        android:title="Course" />
+
+    <!-- 匹配 -->
+    <item
+        android:id="@+id/navigation_match"
+        android:icon="@drawable/ic_match"
+        android:title="Match" />
+
+    <!-- 个人主页 -->
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile" />
+</menu>

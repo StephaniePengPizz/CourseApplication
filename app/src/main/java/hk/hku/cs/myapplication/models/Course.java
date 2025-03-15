@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication;
+package hk.hku.cs.myapplication.models;
 public class Course {
     private String courseName;
     private String courseTime;

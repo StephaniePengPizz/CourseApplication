@@ -1,7 +1,10 @@
 <resources>
     <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="purple_100">#E1BEE7</color> <!-- 浅紫色 -->
+    <color name="purple_500">#9C27B0</color> <!-- 中等紫色 -->
+    <color name="purple_800">#6A1B9A</color> <!-- 深紫色 -->
+    <color name="white">#FFFFFF</color> <!-- 白色 -->
 </resources>

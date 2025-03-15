@@ -1,6 +1,5 @@
-package hk.hku.cs.myapplication;
+package hk.hku.cs.myapplication.activities;
 
-import android.app.ListActivity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.icu.util.Calendar;
@@ -19,8 +18,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import hk.hku.cs.myapplication.models.Course;
+import hk.hku.cs.myapplication.R;
+import hk.hku.cs.myapplication.adapters.CourseAdapter;
+import hk.hku.cs.myapplication.utils.NavigationUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private CourseAdapter courseAdapter;
     private List<Course> courseList;
     private String selectedTime = ""; // 保存用户选择的时间
+    private BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +71,15 @@ public class MainActivity extends AppCompatActivity {
 
         // 添加课程按钮点击事件
         findViewById(R.id.addCourseButton).setOnClickListener(v -> showAddCourseDialog());
+
+        // 初始化底部导航栏
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(NavigationUtils.getNavListener(this));
+
+        // 根据当前 Activity 设置选中项
+        bottomNavigationView.setSelectedItemId(R.id.navigation_course);
     }
+
 
     private void showAddCourseDialog() {
         // 创建对话框视图

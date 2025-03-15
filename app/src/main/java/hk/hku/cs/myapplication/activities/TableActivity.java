@@ -1,8 +1,7 @@
-package hk.hku.cs.myapplication;
+package hk.hku.cs.myapplication.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -12,6 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import hk.hku.cs.myapplication.models.Course;
+import hk.hku.cs.myapplication.R;
 
 public class TableActivity extends AppCompatActivity {
 
