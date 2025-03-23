@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hk.hku.cs.myapplication">
 
@@ -8,22 +9,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/Theme.MyTimetable">
-
         <!-- MainActivity 是默认启动项 -->
-        <activity android:name=".activities.MainActivity" android:exported="true">
+        <activity
+            android:name=".activities.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- 其他 Activity -->
-        <activity android:name=".activities.TableActivity" android:exported="false" />
-        <activity android:name=".activities.MatchActivity" android:exported="false" />
-        <activity android:name=".activities.MatchResultActivity" android:exported="false" />
-        <activity android:name=".activities.ProfileActivity" android:exported="false" />
-        <activity android:name=".activities.EditProfileActivity" android:exported="false" />
-
+        </activity> <!-- 其他 Activity -->
+        <activity
+            android:name=".activities.TableActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.MatchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.MatchResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ForumActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -27,6 +27,7 @@ import hk.hku.cs.myapplication.models.Course;
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.adapters.CourseAdapter;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
+import hk.hku.cs.myapplication.models.ForumManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -116,8 +117,12 @@ public class MainActivity extends AppCompatActivity {
 
                     // 添加新课程
                     if (!courseName.isEmpty() && !courseTime.isEmpty() && !courseLocation.isEmpty()) {
-                        courseList.add(new Course(courseName, courseTime, courseLocation, day));
+                        Course course = new Course(courseName, courseTime, courseLocation, day);
+                        courseList.add(course);
                         courseAdapter.notifyDataSetChanged(); // 通知适配器数据已更新
+
+                        // 自动创建论坛
+                        ForumManager.getOrCreateForum(course.getCourseName());
                     }
                 })
                 .setNegativeButton("Cancel", null)
