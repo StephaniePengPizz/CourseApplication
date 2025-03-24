@@ -50,15 +50,20 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // 初始化默认课程表
-        courseList = new ArrayList<>();
-        courseList.add(new Course("Math", "09:00 AM", "Room 101", "Monday"));
-        courseList.add(new Course("Science", "10:00 AM", "Room 102", "Tuesday"));
-        courseList.add(new Course("English", "01:00 PM", "Room 104", "Thursday"));
-        courseList.add(new Course("Physics", "02:00 PM", "Room 105", "Friday"));
+        //courseList = new ArrayList<>();
+        FileStorageManager.initDataIfNeeded(getApplicationContext());
+        courseList = FileStorageManager.load_data(getApplicationContext());
+        //courseList.add(new Course("Math", "09:00 AM", "Room 101", "Monday"));
+        //courseList.add(new Course("Science", "10:00 AM", "Room 102", "Tuesday"));
+        //courseList.add(new Course("English", "01:00 PM", "Room 104", "Thursday"));
+        //courseList.add(new Course("Physics", "02:00 PM", "Room 105", "Friday"));
 
         // 设置适配器
         courseAdapter = new CourseAdapter(courseList);
         recyclerView.setAdapter(courseAdapter);
+
+        //从后端加载课程
+        //loadCourses();
 
         // 切换按钮点击事件
         switchButton.setOnClickListener(v -> {
@@ -80,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         // 根据当前 Activity 设置选中项
         bottomNavigationView.setSelectedItemId(R.id.navigation_course);
     }
-
 
     private void showAddCourseDialog() {
         // 创建对话框视图
@@ -118,11 +122,10 @@ public class MainActivity extends AppCompatActivity {
                     // 添加新课程
                     if (!courseName.isEmpty() && !courseTime.isEmpty() && !courseLocation.isEmpty()) {
                         Course course = new Course(courseName, courseTime, courseLocation, day);
-                        courseList.add(course);
-                        courseAdapter.notifyDataSetChanged(); // 通知适配器数据已更新
+                        //courseList.add(course);
+                        //courseAdapter.notifyDataSetChanged(); // 通知适配器数据已更新
+                        addCourse(course);//添加论坛也在这个里面
 
-                        // 自动创建论坛
-                        ForumManager.getOrCreateForum(course.getCourseName());
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -131,6 +134,15 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void addCourse(Course course) {
+        courseList.add(course);
+        courseAdapter.notifyItemInserted(courseList.size() - 1);
+
+        FileStorageManager.save_data(getApplicationContext(), courseList);
+        // 自动创建论坛
+        ForumManager.getOrCreateForum(course.getCourseName());
+
+    }
     private void showTimePicker(TextView selectedTimeTextView) {
         // 获取当前时间
         Calendar calendar = Calendar.getInstance();
