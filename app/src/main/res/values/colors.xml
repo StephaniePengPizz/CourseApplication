@@ -7,4 +7,5 @@
     <color name="purple_500">#9C27B0</color> <!-- 中等紫色 -->
     <color name="purple_800">#6A1B9A</color> <!-- 深紫色 -->
     <color name="white">#FFFFFF</color> <!-- 白色 -->
+    <color name="blue">#2196F3</color>  <!-- 蓝色 -->
 </resources>
