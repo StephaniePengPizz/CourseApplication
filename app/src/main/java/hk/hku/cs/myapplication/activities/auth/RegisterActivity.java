@@ -1,8 +1,7 @@
-package hk.hku.cs.myapplication.activities;
+package hk.hku.cs.myapplication.activities.auth;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -20,6 +19,9 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import hk.hku.cs.myapplication.R;
+import hk.hku.cs.myapplication.activities.course.MainActivity;
+import hk.hku.cs.myapplication.models.RegisterRequest;
+import hk.hku.cs.myapplication.network.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

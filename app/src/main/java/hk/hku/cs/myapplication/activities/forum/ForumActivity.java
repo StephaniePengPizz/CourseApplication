@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.activities;
+package hk.hku.cs.myapplication.activities.forum;
 
 import android.os.Bundle;
 import android.util.Log;

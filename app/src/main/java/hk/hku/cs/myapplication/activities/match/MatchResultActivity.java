@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.activities;
+package hk.hku.cs.myapplication.activities.match;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.models.User;
 import hk.hku.cs.myapplication.adapters.UserAdapter;
-import hk.hku.cs.myapplication.utils.NavigationUtils;
 
 public class MatchResultActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.activities;
+package hk.hku.cs.myapplication.activities.user;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,12 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import hk.hku.cs.myapplication.R;
+import hk.hku.cs.myapplication.activities.auth.LoginActivity;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
 
 public class ProfileActivity extends AppCompatActivity {

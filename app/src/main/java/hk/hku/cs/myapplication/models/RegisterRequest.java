@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.activities;
+package hk.hku.cs.myapplication.models;
 
 public class RegisterRequest {
     private String username;

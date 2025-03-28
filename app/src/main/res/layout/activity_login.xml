@@ -6,12 +6,11 @@
 
     <!-- 用户名输入框 -->
     <EditText
-        android:id="@+id/etEmail"
+        android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginTop="80dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
+        android:hint="Username"
         android:layout_centerHorizontal="true"/>
 
     <!-- 密码输入框 -->
@@ -21,7 +20,7 @@
         android:layout_height="55dp"
         android:hint="Password"
         android:inputType="textPassword"
-        android:layout_below="@id/etEmail"
+        android:layout_below="@id/etUsername"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"/>
 

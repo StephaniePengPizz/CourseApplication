@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.activities;
+package hk.hku.cs.myapplication.activities.match;
 
 import android.content.Intent;
 import android.os.Bundle;

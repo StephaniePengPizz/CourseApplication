@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.activities;
+package hk.hku.cs.myapplication.activities.course;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -20,9 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import hk.hku.cs.myapplication.activities.FileStorageManager;
 import hk.hku.cs.myapplication.models.Course;
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.adapters.CourseAdapter;

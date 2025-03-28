@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true">
         <!-- LoginActivity 是默认启动项 -->
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".activities.auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,28 +23,28 @@
             </intent-filter>
         </activity> <!-- 其他 Activity -->
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name=".activities.auth.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.course.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.TableActivity"
+            android:name=".activities.course.TableActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MatchActivity"
+            android:name=".activities.match.MatchActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MatchResultActivity"
+            android:name=".activities.match.MatchResultActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ProfileActivity"
+            android:name=".activities.user.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.EditProfileActivity"
+            android:name=".activities.user.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ForumActivity"
+            android:name=".activities.forum.ForumActivity"
             android:exported="false" />
     </application>
 

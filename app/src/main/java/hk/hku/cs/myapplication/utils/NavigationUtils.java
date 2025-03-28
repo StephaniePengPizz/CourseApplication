@@ -3,9 +3,9 @@ package hk.hku.cs.myapplication.utils;  // 根据项目包名调整
 import android.app.Activity;
 import android.content.Intent;
 
-import hk.hku.cs.myapplication.activities.MainActivity;
-import hk.hku.cs.myapplication.activities.MatchActivity;
-import hk.hku.cs.myapplication.activities.ProfileActivity;
+import hk.hku.cs.myapplication.activities.course.MainActivity;
+import hk.hku.cs.myapplication.activities.match.MatchActivity;
+import hk.hku.cs.myapplication.activities.user.ProfileActivity;
 import hk.hku.cs.myapplication.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;

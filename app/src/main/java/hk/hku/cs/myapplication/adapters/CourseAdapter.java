@@ -14,9 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import hk.hku.cs.myapplication.R;
-import hk.hku.cs.myapplication.activities.ForumActivity;
-import hk.hku.cs.myapplication.models.Course;
-
+import hk.hku.cs.myapplication.activities.forum.ForumActivity;
 import hk.hku.cs.myapplication.models.Course;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
