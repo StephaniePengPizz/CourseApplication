@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import hk.hku.cs.myapplication.activities.course.PoolCourseActivity;
-import hk.hku.cs.myapplication.activities.course.MainActivity;
+import hk.hku.cs.myapplication.activities.course.MyCourseActivity;
 import hk.hku.cs.myapplication.activities.match.MatchActivity;
 import hk.hku.cs.myapplication.activities.user.ProfileActivity;
 import hk.hku.cs.myapplication.R;
@@ -30,8 +30,8 @@ public class NavigationUtils {
                     intent = new Intent(activity, PoolCourseActivity.class);
                 }
             } else if (itemId == R.id.navigation_my_course) {
-                if (!(activity instanceof MainActivity)) {
-                    intent = new Intent(activity, MainActivity.class);
+                if (!(activity instanceof MyCourseActivity)) {
+                    intent = new Intent(activity, MyCourseActivity.class);
                 }
             } else if (itemId == R.id.navigation_match) {
                 if (!(activity instanceof MatchActivity)) {

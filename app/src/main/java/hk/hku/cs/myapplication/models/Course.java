@@ -85,17 +85,17 @@ public class Course {
         public void setDayOfWeek(String day) { this.day_of_week = day; }
 
         public String getStartTime() {
-            return start_time != null ? start_time.split("T")[1].substring(0, 5) : null;
+            return start_time;
         }
         public void setStartTime(String time) {
-            this.start_time = time.contains("T") ? time : "T" + time + ":00";
+            this.start_time = time;
         }
 
         public String getEndTime() {
-            return end_time != null ? end_time.split("T")[1].substring(0, 5) : null;
+            return end_time;
         }
         public void setEndTime(String time) {
-            this.end_time = time.contains("T") ? time : "T" + time + ":00";
+            this.end_time = time;
         }
 
         public String getLocation() { return location; }
@@ -136,7 +136,7 @@ public class Course {
     public void setTeachers(List<Teacher> teachers) { this.course_teachers = teachers; }
 
     public List<Schedule> getSchedules() { return course_schedules; }
-    public void getSchedules(List<Schedule> schedules) { this.course_schedules = schedules; }
+    public void setSchedules(List<Schedule> schedules) { this.course_schedules = schedules; }
 
     // 实用方法
     public void addTeacher(Teacher teacher) {

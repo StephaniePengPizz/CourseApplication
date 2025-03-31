@@ -43,6 +43,9 @@ public class RetrofitClient {
 
                     .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                     .addInterceptor(chain -> {
+                        if (appContext == null) {
+                            throw new IllegalStateException("RetrofitClient not initialized. Call RetrofitClient.initialize(context) first.");
+                        }
                         // 自动添加token到请求头
                         Request original = chain.request();
                         SharedPreferences prefs = appContext.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);

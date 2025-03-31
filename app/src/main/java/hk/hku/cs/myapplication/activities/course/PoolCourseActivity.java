@@ -56,12 +56,6 @@ public class PoolCourseActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // 初始化默认课程表
-        //courseList = new ArrayList<>();
-        //courseList.add(new Course("Math", "09:00 AM", "Room 101", "Monday"));
-        //courseList.add(new Course("Science", "10:00 AM", "Room 102", "Tuesday"));
-        //courseList.add(new Course("English", "01:00 PM", "Room 104", "Thursday"));
-        //courseList.add(new Course("Physics", "02:00 PM", "Room 105", "Friday"));
         loadPoolCoursesFromBackend();
 
         // 设置适配器
@@ -154,7 +148,7 @@ public class PoolCourseActivity extends AppCompatActivity {
                     // 添加到课程
                     List<Course.Schedule> schedules = new ArrayList<>();
                     schedules.add(schedule);
-                    course.getSchedules(schedules);
+                    course.setSchedules(schedules);
 
                     addCourseToBackend(course);//论坛也在这个里面
                     ForumManager.getOrCreateForum(course.getCourseName());// 自动创建论坛

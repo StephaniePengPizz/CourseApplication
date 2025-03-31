@@ -30,7 +30,7 @@ public interface ApiService {
             @Query("page") int page,
             @Query("size") int size
     );
-    @GET("api/v1/main/courses/me")
+    @GET("api/v1/main/user/courses")
     Call<CourseMyListResponse> getMyCourses();
 
     // 添加课程基本信息

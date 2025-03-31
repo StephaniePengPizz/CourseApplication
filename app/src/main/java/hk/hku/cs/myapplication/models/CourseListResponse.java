@@ -11,10 +11,6 @@ public class CourseListResponse {
         return code;
     }
 
-    public String getMsg() {
-        return msg;
-    }
-
     public Data getData() {
         return data;
     }

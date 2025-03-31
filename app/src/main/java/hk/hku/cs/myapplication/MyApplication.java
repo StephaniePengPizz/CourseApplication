@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.activities;
+package hk.hku.cs.myapplication;
 
 // MyApplication.java
 import android.app.Application;
@@ -9,7 +9,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        // 在这里初始化 RetrofitClient
         RetrofitClient.initialize(this); // this 指向 Application Context
     }
 }

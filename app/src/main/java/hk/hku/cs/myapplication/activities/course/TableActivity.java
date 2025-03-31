@@ -47,7 +47,7 @@ public class TableActivity extends AppCompatActivity {
 
         // 切换按钮点击事件
         switchButton.setOnClickListener(v -> {
-            Intent intent = new Intent(TableActivity.this, MainActivity.class);
+            Intent intent = new Intent(TableActivity.this, MyCourseActivity.class);
             startActivity(intent);
         });
 

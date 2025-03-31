@@ -28,9 +28,9 @@
         android:textSize="16sp" />
 
     <Button
-        android:id="@+id/addToMyCourseButton"
+        android:id="@+id/forumButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add to My Course"
-        android:layout_marginTop="8dp"/>
+        android:text="Enter the Forum"
+        android:layout_marginTop="8dp" />
 </LinearLayout>
