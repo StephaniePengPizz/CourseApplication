@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Timetable</string>
+    <string name="app_name">Timetable</string>
     <string name="course_math">Math 101</string>
     <string name="time_day">Time/Day</string>
     <string name="monday">Mon</string>

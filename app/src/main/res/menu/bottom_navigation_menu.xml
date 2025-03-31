@@ -2,9 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 课程表 -->
     <item
-        android:id="@+id/navigation_course"
+        android:id="@+id/navigation_pool_course"
         android:icon="@drawable/ic_course"
-        android:title="Course" />
+        android:title="Pool Courses" />
+
+    <item
+        android:id="@+id/navigation_my_course"
+        android:icon="@drawable/ic_course"
+        android:title="My Courses" />
 
     <!-- 匹配 -->
     <item

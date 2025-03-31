@@ -29,6 +29,9 @@
             android:name=".activities.course.MainActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.course.PoolCourseActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.course.TableActivity"
             android:exported="false" />
         <activity

@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 
 import hk.hku.cs.myapplication.R;
-import hk.hku.cs.myapplication.activities.course.MainActivity;
+import hk.hku.cs.myapplication.activities.course.PoolCourseActivity;
 import hk.hku.cs.myapplication.models.LoginRequest;
 import hk.hku.cs.myapplication.models.LoginResponse;
 import hk.hku.cs.myapplication.models.User;
@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (loginResponse.isSuccess()) {
                         // 保存登录状态和token
                         saveLoginData(loginResponse);
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        startActivity(new Intent(LoginActivity.this, PoolCourseActivity.class));
                         finish();
                     } else {
                         Toast.makeText(LoginActivity.this, "登录失败: 用户名或密码错误", Toast.LENGTH_SHORT).show();

@@ -27,12 +27,23 @@
         android:text="@string/course_time_location"
         android:textSize="16sp" />
 
-    <!-- 新增按钮 -->
-    <Button
-        android:id="@+id/forumButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter the Forum"
-        android:layout_marginTop="8dp" />
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+        <Button
+            android:id="@+id/forumButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter the Forum"
+            android:layout_marginTop="8dp" />
 
+        <Button
+            android:id="@+id/addToMyCourseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add to My Course"
+            android:layout_marginTop="8dp"/>
+    </LinearLayout>
 </LinearLayout>

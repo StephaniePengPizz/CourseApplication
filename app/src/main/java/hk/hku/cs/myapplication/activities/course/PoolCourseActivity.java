@@ -2,6 +2,7 @@ package hk.hku.cs.myapplication.activities.course;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -23,23 +24,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import hk.hku.cs.myapplication.R;
-import hk.hku.cs.myapplication.adapters.CourseAdapter;
 import hk.hku.cs.myapplication.models.AddCourseRequest;
 import hk.hku.cs.myapplication.models.AddScheduleRequest;
 import hk.hku.cs.myapplication.models.ApiResponse;
 import hk.hku.cs.myapplication.models.Course;
-import hk.hku.cs.myapplication.models.ForumManager;
+import hk.hku.cs.myapplication.R;
+import hk.hku.cs.myapplication.adapters.CourseAdapter;
+import hk.hku.cs.myapplication.models.CourseListResponse;
 import hk.hku.cs.myapplication.network.RetrofitClient;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
+import hk.hku.cs.myapplication.models.ForumManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class PoolCourseActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private Button switchButton;
     private CourseAdapter courseAdapter;
     private List<Course> courseList = new ArrayList<>(); // 初始化列表;
     private String selectedTime = ""; // 保存用户选择的时间
@@ -49,11 +50,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_pool_course);
 
         // 初始化 RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
-        switchButton = findViewById(R.id.switchButton);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // 初始化默认课程表
@@ -62,27 +62,45 @@ public class MainActivity extends AppCompatActivity {
         //courseList.add(new Course("Science", "10:00 AM", "Room 102", "Tuesday"));
         //courseList.add(new Course("English", "01:00 PM", "Room 104", "Thursday"));
         //courseList.add(new Course("Physics", "02:00 PM", "Room 105", "Friday"));
-        loadMyCoursesFromBackend();
+        loadPoolCoursesFromBackend();
 
         // 设置适配器
         courseAdapter = new CourseAdapter(courseList);
         recyclerView.setAdapter(courseAdapter);
 
-        // 切换按钮点击事件
-        switchButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, TableActivity.class);
-            startActivity(intent);
-        });
+        // 添加课程按钮点击事件
+        findViewById(R.id.addCourseButton).setOnClickListener(v -> showAddCourseDialog());
 
         // 初始化底部导航栏
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));
 
         // 根据当前 Activity 设置选中项
-        bottomNavigationView.setSelectedItemId(R.id.navigation_my_course);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_pool_course);
     }
 
-    private void loadMyCoursesFromBackend() {
+    private void loadPoolCoursesFromBackend() {
+        Call<CourseListResponse> call = RetrofitClient.getInstance().getCourses(null, null, null, 1, 20);
+        call.enqueue(new Callback<CourseListResponse>() {
+            @Override
+            public void onResponse(Call<CourseListResponse> call, Response<CourseListResponse> response) {
+                Log.d("dadad", response.toString());
+                if (response.isSuccessful() && response.body() != null) {
+                    CourseListResponse courseResponse = response.body();
+                    if (courseResponse.getCode() == 200 && courseResponse.getData() != null) {
+                        List<Course> courseList = courseResponse.getCourses();
+                        courseAdapter.updateCourses(courseList);
+                        Log.d("API Response", courseResponse.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CourseListResponse> call, Throwable t) {
+                //courseAdapter.updateCourses(courseList);
+                Toast.makeText(PoolCourseActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     private void showAddCourseDialog() {
         // 创建对话框视图
@@ -180,18 +198,18 @@ public class MainActivity extends AppCompatActivity {
                         // 2. 添加课程时间表
                         addCourseScheduleToBackend(courseId, course.getSchedules().get(0));
                     } else {
-                        Toast.makeText(MainActivity.this,
+                        Toast.makeText(PoolCourseActivity.this,
                                 "Failed to add course: " + apiResponse.getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(MainActivity.this, "Failed to add course", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PoolCourseActivity.this, "Failed to add course", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Course>> call, Throwable t) {
-                Toast.makeText(MainActivity.this,
+                Toast.makeText(PoolCourseActivity.this,
                         "Network error: " + t.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
@@ -226,17 +244,17 @@ public class MainActivity extends AppCompatActivity {
 
                     if (apiResponse.getCode() == 200) {
                         // 课程和时间表都添加成功
-                        loadMyCoursesFromBackend(); // 刷新课程列表
-                        Toast.makeText(MainActivity.this,
+                        loadPoolCoursesFromBackend(); // 刷新课程列表
+                        Toast.makeText(PoolCourseActivity.this,
                                 "Course added successfully",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(MainActivity.this,
+                        Toast.makeText(PoolCourseActivity.this,
                                 "Failed to add schedule: " + apiResponse.getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(MainActivity.this,
+                    Toast.makeText(PoolCourseActivity.this,
                             "Failed to add schedule",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -244,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ApiResponse<Course.Schedule>> call, Throwable t) {
-                Toast.makeText(MainActivity.this,
+                Toast.makeText(PoolCourseActivity.this,
                         "Network error: " + t.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }

@@ -19,7 +19,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import hk.hku.cs.myapplication.R;
-import hk.hku.cs.myapplication.activities.course.MainActivity;
+import hk.hku.cs.myapplication.activities.course.PoolCourseActivity;
 import hk.hku.cs.myapplication.models.RegisterRequest;
 import hk.hku.cs.myapplication.network.RetrofitClient;
 import retrofit2.Call;
