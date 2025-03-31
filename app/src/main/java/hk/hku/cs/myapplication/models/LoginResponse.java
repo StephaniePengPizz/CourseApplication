@@ -18,31 +18,19 @@ public class LoginResponse {
         return msg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
     public Data getData() {
         return data;
     }
 
-    public void setData(Data data) {
-        this.data = data;
-    }
-
     public static class Data {
-        private String accessToken;
+        private String access_token;
         private String accessTokenExpireTime;
         private String sessionUuid;
         private User user;
 
         // Getters and Setters
         public String getAccessToken() {
-            return accessToken;
-        }
-
-        public void setAccessToken(String accessToken) {
-            this.accessToken = accessToken;
+            return access_token;
         }
 
         public String getAccessTokenExpireTime() {

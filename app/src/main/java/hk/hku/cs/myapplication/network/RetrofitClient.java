@@ -45,7 +45,8 @@ public class RetrofitClient {
                     .addInterceptor(chain -> {
                         // 自动添加token到请求头
                         Request original = chain.request();
-                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
+                        SharedPreferences prefs = appContext.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+                        // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
                         String token = prefs.getString("authToken", "");
 
                         if (!token.isEmpty()) {

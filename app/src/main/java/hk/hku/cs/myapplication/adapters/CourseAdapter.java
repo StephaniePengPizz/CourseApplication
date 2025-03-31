@@ -37,8 +37,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         Course course = courseList.get(position);
         holder.courseNameTextView.setText(course.getCourseName());
-        holder.courseTimeTextView.setText(course.getCourseTime());
-        holder.courseLocationTextView.setText(course.getCourseLocation());
+        holder.courseTimeTextView.setText(course.getPrimaryScheduleTime());
+        holder.courseLocationTextView.setText(course.getPrimaryLocation());
 
         holder.forumButton.setOnClickListener(v -> {
             Context context = v.getContext();
@@ -66,5 +66,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             courseLocationTextView = itemView.findViewById(R.id.courseLocationTextView);
             forumButton = itemView.findViewById(R.id.forumButton);
         }
+    }
+    public void updateCourses(List<Course> newCourses) {
+        this.courseList = newCourses;
+        notifyDataSetChanged();
     }
 }

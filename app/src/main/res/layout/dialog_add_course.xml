@@ -5,29 +5,79 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- 课程代码 -->
+    <EditText
+        android:id="@+id/courseCodeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Course Code *"
+        android:inputType="textCapCharacters"
+        android:maxLines="1"/>
+
     <!-- 课程名称输入框 -->
     <EditText
         android:id="@+id/courseNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Course Name"
+        android:hint="Course Name *"
         android:inputType="text" />
 
-    <!-- 时间选择按钮 -->
-    <Button
-        android:id="@+id/selectTimeButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Select Course Time"
-        android:layout_marginTop="8dp" />
-
-    <!-- 显示已选择的时间 -->
+    <!-- 学期选择 -->
     <TextView
-        android:id="@+id/selectedTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Semester *"
+        android:layout_marginTop="8dp"/>
+
+    <Spinner
+        android:id="@+id/semesterSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Selected Time: None"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="4dp"/>
+
+    <!-- 星期选择 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Day of Week *"
+        android:layout_marginTop="8dp"/>
+
+    <Spinner
+        android:id="@+id/daySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"/>
+
+    <!-- 开始时间 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Time *"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/startTimeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="HH:mm (e.g. 09:00)"
+        android:layout_marginTop="4dp"
+        android:inputType="time"/>
+
+    <!-- 结束时间 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End Time *"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/endTimeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="HH:mm (e.g. 11:00)"
+        android:layout_marginTop="4dp"
+        android:inputType="time"/>
+
 
     <!-- 课程地点输入框 -->
     <EditText
@@ -37,19 +87,19 @@
         android:hint="Course Location"
         android:layout_marginTop="8dp" />
 
-    <!-- 星期几选择器 -->
-    <Spinner
-        android:id="@+id/daySpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
-
-    <!-- 星期几标签 -->
+    <!-- 教师选择 (可选) -->
     <TextView
-        android:id="@+id/courseDayTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Course Day"
-        android:layout_marginTop="8dp" />
+        android:text="Teachers"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"/>
+
+    <MultiAutoCompleteTextView
+        android:id="@+id/teachersEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select teachers (optional)"
+        android:layout_marginTop="8dp"/>
 
 </LinearLayout>

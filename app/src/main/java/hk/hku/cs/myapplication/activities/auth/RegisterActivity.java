@@ -84,18 +84,8 @@ public class RegisterActivity extends AppCompatActivity {
         }
         registerUser(username, password, email);
 
-        //Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
-
-        // 保存用户信息到SharedPreferences
-        //SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        //SharedPreferences.Editor editor = prefs.edit();
-        //editor.putString("userName", username);
-        //editor.putString("email", email);
-        //editor.putBoolean("isLoggedIn", true);
-        //editor.apply();
-
         // 跳转到主界面
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
     private void registerUser(String username, String password, String email) {

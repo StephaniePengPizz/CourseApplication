@@ -37,10 +37,10 @@ public class TableActivity extends AppCompatActivity {
 
         // 初始化默认课程表
         courseList = new ArrayList<>();
-        courseList.add(new Course("Math", "09:00 AM", "Room 101", "Mon"));
-        courseList.add(new Course("Science", "10:00 AM", "Room 102", "Tue"));
-        courseList.add(new Course("English", "01:00 PM", "Room 104", "Thur"));
-        courseList.add(new Course("Physics", "02:00 PM", "Room 105", "Fri"));
+        //courseList.add(new Course("11", "Math", "09:00 AM", "Room 101", "Mon", 1));
+        //courseList.add(new Course("21","Science", "10:00 AM", "Room 102", "Tue", 1));
+        //courseList.add(new Course("31", "English", "01:00 PM", "Room 104", "Thur", 1));
+        //courseList.add(new Course("41", "Physics", "02:00 PM", "Room 105", "Fri", 1));
 
         // 设置表格布局
         updateTableLayout();
@@ -63,8 +63,8 @@ public class TableActivity extends AppCompatActivity {
         // 按天分组
         Map<String, Map<String, Course>> coursesByDayAndTime = new HashMap<>();
         for (Course course : courseList) {
-            String day = course.getDay();
-            String time = course.getCourseTime();
+            String day = course.getSchedules().get(course.getId()).getDayOfWeek();
+            String time = course.getPrimaryScheduleTime();
             if (!coursesByDayAndTime.containsKey(day)) {
                 coursesByDayAndTime.put(day, new HashMap<>());
             }
@@ -91,7 +91,7 @@ public class TableActivity extends AppCompatActivity {
             for (String day : days) {
                 if (coursesByDayAndTime.containsKey(day) && coursesByDayAndTime.get(day).containsKey(time)) {
                     Course course = coursesByDayAndTime.get(day).get(time);
-                    addTextViewToRow(row, course.getCourseName() + "\n" + course.getCourseLocation());
+                    addTextViewToRow(row, course.getCourseName() + "\n" + course.getPrimaryLocation());
                 } else {
                     addTextViewToRow(row, ""); // 空白单元格
                 }

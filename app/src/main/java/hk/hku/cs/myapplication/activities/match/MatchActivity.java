@@ -35,9 +35,7 @@ public class MatchActivity extends AppCompatActivity {
 
         // 初始化数据
         CourseList = new ArrayList<>();
-        CourseList.add(new Course("Math", "09:00 AM", "Room 101", "Monday"));
-        CourseList.add(new Course("Science", "10:00 AM", "Room 102", "Tuesday"));
-
+        
         // 设置适配器
         CourseAdapter = new CourseAdapter(CourseList);
         CourseRecyclerView.setLayoutManager(new LinearLayoutManager(this));
