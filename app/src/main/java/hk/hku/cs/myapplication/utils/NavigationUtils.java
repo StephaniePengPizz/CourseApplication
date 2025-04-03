@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import hk.hku.cs.myapplication.activities.course.PoolCourseActivity;
 import hk.hku.cs.myapplication.activities.course.MyCourseActivity;
+import hk.hku.cs.myapplication.activities.calendar.CalendarActivity;
 import hk.hku.cs.myapplication.activities.match.MatchActivity;
 import hk.hku.cs.myapplication.activities.user.ProfileActivity;
 import hk.hku.cs.myapplication.R;
@@ -32,6 +33,10 @@ public class NavigationUtils {
             } else if (itemId == R.id.navigation_my_course) {
                 if (!(activity instanceof MyCourseActivity)) {
                     intent = new Intent(activity, MyCourseActivity.class);
+                }
+            } else if (itemId == R.id.navigation_calendar) {
+                if (!(activity instanceof MyCourseActivity)) {
+                    intent = new Intent(activity, CalendarActivity.class);
                 }
             } else if (itemId == R.id.navigation_match) {
                 if (!(activity instanceof MatchActivity)) {
