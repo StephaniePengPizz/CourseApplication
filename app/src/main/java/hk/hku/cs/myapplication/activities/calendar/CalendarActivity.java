@@ -5,16 +5,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.gridlayout.widget.GridLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,27 +46,21 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
 
         schedules = new HashMap<>();
-        // 使用提供的当前时间初始化
-        currentDate = LocalDate.parse("2025-04-03");
+        currentDate = LocalDate.now();
 
-        // 初始化视图并设置 GridLayout 的列数和行数
         monthLabel = findViewById(R.id.monthLabel);
         calendarGrid = findViewById(R.id.calendarGrid);
-        calendarGrid.setColumnCount(7); // 设置7列
-        calendarGrid.setRowCount(7); // 设置7行（1行表头 + 最多6行日期）
+        calendarGrid.setColumnCount(7);
+        calendarGrid.setRowCount(7);
 
         Button prevButton = findViewById(R.id.prevButton);
         Button nextButton = findViewById(R.id.nextButton);
         Button addScheduleButton = findViewById(R.id.addScheduleButton);
 
-        // 初始化底部导航栏
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));
-
-        // 设置当前选中项
         bottomNavigationView.setSelectedItemId(R.id.navigation_calendar);
 
-        // 设置点击事件
         prevButton.setOnClickListener(v -> {
             currentDate = currentDate.minusMonths(1);
             updateCalendar();
@@ -79,33 +80,21 @@ public class CalendarActivity extends AppCompatActivity {
     private void updateCalendar() {
         calendarGrid.removeAllViews();
 
-        // 设置月份标签
         monthLabel.setText(currentDate.format(DateTimeFormatter.ofPattern("yyyy年 MM月")));
 
-        // 添加星期标签
         String[] weekdays = {"日", "一", "二", "三", "四", "五", "六"};
         for (String weekday : weekdays) {
             TextView label = createTextView(weekday);
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.width = 0;
-            params.height = GridLayout.LayoutParams.WRAP_CONTENT;
-            params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-            label.setLayoutParams(params);
-            calendarGrid.addView(label);
+            addViewToGrid(label);
         }
 
-        // 获取当月第一天
         LocalDate firstDay = currentDate.withDayOfMonth(1);
         int monthLength = currentDate.lengthOfMonth();
-
-        // 获取第一天是星期几 (0 = 星期日, 1 = 星期一, ..., 6 = 星期六)
         int firstDayOfWeek = firstDay.getDayOfWeek().getValue() % 7;
 
-        // 获取上个月的天数
+        // 上月日期
         LocalDate lastMonth = firstDay.minusMonths(1);
         int lastMonthDays = lastMonth.lengthOfMonth();
-
-        // 添加上个月的日期（灰色显示）
         for (int i = 0; i < firstDayOfWeek; i++) {
             int day = lastMonthDays - firstDayOfWeek + i + 1;
             Button dayButton = createDayButton(String.valueOf(day));
@@ -113,27 +102,50 @@ public class CalendarActivity extends AppCompatActivity {
             addButtonToGrid(dayButton);
         }
 
-        // 添加当月日期
+        // 当月日期
         for (int i = 1; i <= monthLength; i++) {
             LocalDate date = currentDate.withDayOfMonth(i);
             Button dayButton = createDayButton(String.valueOf(i));
 
-            // 如果有日程，设置背景颜色
             if (schedules.containsKey(date) && !Objects.requireNonNull(schedules.get(date)).isEmpty()) {
-                dayButton.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+                List<Schedule> dateSchedules = schedules.get(date);
+                Schedule.Priority highestPriority = getHighestPriority(dateSchedules);
+                int color;
+                switch (highestPriority) {
+                    case HIGH:
+                        color = getResources().getColor(android.R.color.holo_red_light);
+                        break;
+                    case MEDIUM:
+                        color = getResources().getColor(android.R.color.holo_orange_light);
+                        break;
+                    default:
+                        color = getResources().getColor(android.R.color.holo_green_light);
+                }
+                dayButton.setBackgroundColor(color);
+                dayButton.setText(String.format("%d\n(%d)", i, dateSchedules.size()));
             }
 
             dayButton.setOnClickListener(v -> showSchedules(date));
             addButtonToGrid(dayButton);
         }
 
-        // 添加下个月的日期（灰色显示）
-        int remainingCells = 42 - (firstDayOfWeek + monthLength); // 6 行 * 7 列 = 42 个格子
+        // 下月日期
+        int remainingCells = 42 - (firstDayOfWeek + monthLength);
         for (int i = 1; i <= remainingCells; i++) {
             Button dayButton = createDayButton(String.valueOf(i));
             dayButton.setAlpha(0.3f);
             addButtonToGrid(dayButton);
         }
+    }
+
+    private Schedule.Priority getHighestPriority(List<Schedule> dateSchedules) {
+        Schedule.Priority highest = Schedule.Priority.LOW;
+        for (Schedule schedule : dateSchedules) {
+            if (schedule.getPriority().ordinal() > highest.ordinal()) {
+                highest = schedule.getPriority();
+            }
+        }
+        return highest;
     }
 
     private TextView createTextView(String text) {
@@ -161,6 +173,15 @@ public class CalendarActivity extends AppCompatActivity {
         calendarGrid.addView(button);
     }
 
+    private void addViewToGrid(View view) {
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.width = 0;
+        params.height = GridLayout.LayoutParams.WRAP_CONTENT;
+        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+        view.setLayoutParams(params);
+        calendarGrid.addView(view);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void showAddScheduleDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -168,10 +189,27 @@ public class CalendarActivity extends AppCompatActivity {
 
         NumberPicker dayPicker = dialogView.findViewById(R.id.dayPicker);
         EditText scheduleInput = dialogView.findViewById(R.id.scheduleInput);
+        EditText categoryInput = dialogView.findViewById(R.id.categoryInput);
+        Spinner prioritySpinner = dialogView.findViewById(R.id.prioritySpinner);
+        CheckBox timeCheckBox = dialogView.findViewById(R.id.timeCheckBox);
+        TimePicker timePicker = dialogView.findViewById(R.id.timePicker);
 
+        // 设置优先级下拉框
+        ArrayAdapter<Schedule.Priority> priorityAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, Schedule.Priority.values());
+        priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        prioritySpinner.setAdapter(priorityAdapter);
+        prioritySpinner.setSelection(1); // 默认中优先级
+
+        // 设置日期选择器
         dayPicker.setMinValue(1);
         dayPicker.setMaxValue(currentDate.lengthOfMonth());
         dayPicker.setValue(currentDate.getDayOfMonth());
+
+        // 时间选择器默认隐藏
+        timePicker.setVisibility(View.GONE);
+        timeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) ->
+                timePicker.setVisibility(isChecked ? View.VISIBLE : View.GONE));
 
         builder.setView(dialogView)
                 .setTitle("添加日程")
@@ -179,8 +217,19 @@ public class CalendarActivity extends AppCompatActivity {
                     String schedule = scheduleInput.getText().toString().trim();
                     if (!schedule.isEmpty()) {
                         LocalDate scheduleDate = currentDate.withDayOfMonth(dayPicker.getValue());
+                        LocalTime scheduleTime = null;
+                        if (timeCheckBox.isChecked()) {
+                            scheduleTime = LocalTime.of(timePicker.getHour(), timePicker.getMinute());
+                        }
+                        Schedule newSchedule = new Schedule(
+                                scheduleDate,
+                                scheduleTime,
+                                schedule,
+                                (Schedule.Priority) prioritySpinner.getSelectedItem(),
+                                categoryInput.getText().toString().trim()
+                        );
                         schedules.computeIfAbsent(scheduleDate, k -> new ArrayList<>())
-                                .add(new Schedule(scheduleDate, schedule));
+                                .add(newSchedule);
                         updateCalendar();
                     }
                 })
@@ -191,22 +240,67 @@ public class CalendarActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void showSchedules(LocalDate date) {
         List<Schedule> dateSchedules = schedules.getOrDefault(date, new ArrayList<>());
-        StringBuilder sb = new StringBuilder();
-        sb.append(date.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))).append("的日程：\n\n");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        assert dateSchedules != null;
         if (dateSchedules.isEmpty()) {
-            sb.append("暂无日程");
-        } else {
-            for (int i = 0; i < dateSchedules.size(); i++) {
-                sb.append(i + 1).append(". ").append(dateSchedules.get(i).getContent()).append("\n");
-            }
+            builder.setTitle(date.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")))
+                    .setMessage("暂无日程")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return;
         }
 
-        new AlertDialog.Builder(this)
-                .setTitle("日程列表")
-                .setMessage(sb.toString())
+        // 创建日程列表视图
+        LinearLayout scheduleList = new LinearLayout(this);
+        scheduleList.setOrientation(LinearLayout.VERTICAL);
+        scheduleList.setPadding(32, 16, 32, 16);
+
+        for (int i = 0; i < dateSchedules.size(); i++) {
+            Schedule schedule = dateSchedules.get(i);
+            TextView scheduleView = new TextView(this);
+            scheduleView.setPadding(0, 8, 0, 8);
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(i + 1).append(". ");
+            if (schedule.getTime() != null) {
+                sb.append(schedule.getTime().format(DateTimeFormatter.ofPattern("HH:mm"))).append(" ");
+            }
+            if (!schedule.getCategory().isEmpty()) {
+                sb.append("[").append(schedule.getCategory()).append("] ");
+            }
+            sb.append(schedule.getContent());
+            sb.append("\n优先级: ").append(schedule.getPriority().toString());
+
+            scheduleView.setText(sb.toString());
+            scheduleList.addView(scheduleView);
+        }
+
+        builder.setTitle(date.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")) + "的日程")
+                .setView(scheduleList)
                 .setPositiveButton("确定", null)
+                .setNeutralButton("删除日程", (dialog, which) -> {
+                    showDeleteScheduleDialog(date, dateSchedules);
+                })
+                .show();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void showDeleteScheduleDialog(LocalDate date, List<Schedule> dateSchedules) {
+        String[] items = new String[dateSchedules.size()];
+        for (int i = 0; i < dateSchedules.size(); i++) {
+            items[i] = dateSchedules.get(i).toString();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("选择要删除的日程")
+                .setItems(items, (dialog, which) -> {
+                    dateSchedules.remove(which);
+                    if (dateSchedules.isEmpty()) {
+                        schedules.remove(date);
+                    }
+                    updateCalendar();
+                })
+                .setNegativeButton("取消", null)
                 .show();
     }
 }
