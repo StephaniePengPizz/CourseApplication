@@ -1,11 +1,21 @@
 package hk.hku.cs.myapplication.activities.calendar;
 
+import android.os.Build;
+import android.util.JsonReader;
+import android.util.JsonWriter;
+
+import androidx.annotation.RequiresApi;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.io.Serializable;
 
-public class Schedule {
+public class Schedule implements Serializable {
     private LocalDate date;
-    private LocalTime time; // 可以为 null，表示全天日程
+    private LocalTime time;
     private String content;
     private Priority priority;
     private String category;
@@ -25,6 +35,93 @@ public class Schedule {
         public String toString() {
             return displayName;
         }
+
+        // Add this method to get enum name
+        public String getName() {
+            return name();
+        }
+
+        // Add this method to get Priority from display name
+        public static Priority fromDisplayName(String displayName) {
+            for (Priority p : values()) {
+                if (p.displayName.equals(displayName)) {
+                    return p;
+                }
+            }
+            return MEDIUM; // default value
+        }
+    }
+
+    public String toJson() {
+        StringWriter stringWriter = new StringWriter();
+        try (JsonWriter writer = new JsonWriter(stringWriter)) {
+            writer.beginObject();
+            writer.name("date").value(date.toString());
+            writer.name("content").value(content);
+            writer.name("priority").value(priority.getName()); // Use enum name instead of display name
+            writer.name("category").value(category);
+            if (time != null) {
+                writer.name("time").value(time.toString());
+            }
+            writer.endObject();
+            return stringWriter.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "{}";
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Schedule fromJson(String jsonStr) {
+        try (JsonReader reader = new JsonReader(new StringReader(jsonStr))) {
+            LocalDate date = null;
+            String content = "";
+            Priority priority = Priority.MEDIUM;
+            String category = "";
+            LocalTime time = null;
+
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                switch (name) {
+                    case "date":
+                        date = LocalDate.parse(reader.nextString());
+                        break;
+                    case "content":
+                        content = reader.nextString();
+                        break;
+                    case "priority":
+                        String priorityStr = reader.nextString();
+                        try {
+                            priority = Priority.valueOf(priorityStr); // Use enum name
+                        } catch (IllegalArgumentException e) {
+                            // If it fails, try to parse as display name
+                            priority = Priority.fromDisplayName(priorityStr);
+                        }
+                        break;
+                    case "category":
+                        category = reader.nextString();
+                        break;
+                    case "time":
+                        String timeStr = reader.nextString();
+                        if (timeStr != null && !timeStr.isEmpty()) {
+                            time = LocalTime.parse(timeStr);
+                        }
+                        break;
+                    default:
+                        reader.skipValue();
+                        break;
+                }
+            }
+            reader.endObject();
+
+            if (date != null) {
+                return new Schedule(date, time, content, priority, category);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Schedule(LocalDate date, String content) {
@@ -71,4 +168,7 @@ public class Schedule {
         sb.append(content);
         return sb.toString();
     }
+
+
+
 }

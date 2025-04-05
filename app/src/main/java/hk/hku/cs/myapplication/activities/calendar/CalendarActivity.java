@@ -32,13 +32,21 @@ import java.util.Objects;
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.utils.HolidayManager;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
-
+import android.content.SharedPreferences;
+import android.util.JsonReader;
+import android.util.JsonWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.IOException;
 public class CalendarActivity extends AppCompatActivity {
     private LocalDate currentDate;
     private TextView monthLabel;
     private GridLayout calendarGrid;
     private Map<LocalDate, List<Schedule>> schedules;
     private BottomNavigationView bottomNavigationView;
+    private static final String PREFS_NAME = "CalendarPreferences";
+    private static final String SCHEDULES_KEY = "saved_schedules";
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -47,6 +55,7 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
 
         schedules = new HashMap<>();
+        loadSchedules();
         currentDate = LocalDate.now();
 
         monthLabel = findViewById(R.id.monthLabel);
@@ -291,6 +300,7 @@ public class CalendarActivity extends AppCompatActivity {
                         );
                         schedules.computeIfAbsent(scheduleDate, k -> new ArrayList<>())
                                 .add(newSchedule);
+                        saveSchedules();
                         updateCalendar();
                     }
                 })
@@ -359,9 +369,70 @@ public class CalendarActivity extends AppCompatActivity {
                     if (dateSchedules.isEmpty()) {
                         schedules.remove(date);
                     }
+                    saveSchedules();
                     updateCalendar();
                 })
                 .setNegativeButton("取消", null)
                 .show();
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void saveSchedules() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        StringWriter stringWriter = new StringWriter();
+        try (JsonWriter writer = new JsonWriter(stringWriter)) {
+            writer.beginObject();
+            for (Map.Entry<LocalDate, List<Schedule>> entry : schedules.entrySet()) {
+                writer.name(entry.getKey().toString());
+                writer.beginArray();
+                for (Schedule schedule : entry.getValue()) {
+                    writer.value(schedule.toJson());
+                }
+                writer.endArray();
+            }
+            writer.endObject();
+            editor.putString(SCHEDULES_KEY, stringWriter.toString());
+            editor.apply();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void loadSchedules() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String schedulesStr = prefs.getString(SCHEDULES_KEY, "{}");
+
+        try (JsonReader reader = new JsonReader(new StringReader(schedulesStr))) {
+            reader.beginObject();
+            while (reader.hasNext()) {
+                try {
+                    String dateStr = reader.nextName();
+                    LocalDate date = LocalDate.parse(dateStr);
+                    reader.beginArray();
+                    List<Schedule> scheduleList = new ArrayList<>();
+                    while (reader.hasNext()) {
+                        Schedule schedule = Schedule.fromJson(reader.nextString());
+                        if (schedule != null) {
+                            scheduleList.add(schedule);
+                        }
+                    }
+                    reader.endArray();
+                    if (!scheduleList.isEmpty()) {
+                        schedules.put(date, scheduleList);
+                    }
+                } catch (Exception e) {
+                    // Skip this entry if there's an error
+                    e.printStackTrace();
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // If there's an error loading, clear the preferences to prevent future crashes
+            prefs.edit().remove(SCHEDULES_KEY).apply();
+        }
     }
 }
