@@ -35,7 +35,7 @@ public class NavigationUtils {
                     intent = new Intent(activity, MyCourseActivity.class);
                 }
             } else if (itemId == R.id.navigation_calendar) {
-                if (!(activity instanceof MyCourseActivity)) {
+                if (!(activity instanceof CalendarActivity)) {
                     intent = new Intent(activity, CalendarActivity.class);
                 }
             } else if (itemId == R.id.navigation_match) {
