@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import hk.hku.cs.myapplication.R;
+import hk.hku.cs.myapplication.utils.HolidayManager;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
 
 public class CalendarActivity extends AppCompatActivity {
@@ -76,6 +77,7 @@ public class CalendarActivity extends AppCompatActivity {
         updateCalendar();
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void updateCalendar() {
         calendarGrid.removeAllViews();
@@ -97,7 +99,19 @@ public class CalendarActivity extends AppCompatActivity {
         int lastMonthDays = lastMonth.lengthOfMonth();
         for (int i = 0; i < firstDayOfWeek; i++) {
             int day = lastMonthDays - firstDayOfWeek + i + 1;
-            Button dayButton = createDayButton(String.valueOf(day));
+            LocalDate date = lastMonth.withDayOfMonth(day);
+            Button dayButton = createDayButton(String.valueOf(day), date);
+
+            // 设置日期和节日文本
+            StringBuilder buttonText = new StringBuilder();
+            buttonText.append(day);  // 日期数字
+
+            String holiday = HolidayManager.getHoliday(date);
+            if (holiday != null) {
+                buttonText.append("\n").append(holiday);  // 节日
+            }
+
+            dayButton.setText(buttonText.toString());
             dayButton.setAlpha(0.3f);
             addButtonToGrid(dayButton);
         }
@@ -105,11 +119,26 @@ public class CalendarActivity extends AppCompatActivity {
         // 当月日期
         for (int i = 1; i <= monthLength; i++) {
             LocalDate date = currentDate.withDayOfMonth(i);
-            Button dayButton = createDayButton(String.valueOf(i));
+            Button dayButton = createDayButton(String.valueOf(i), date);
 
+            // 设置日期和节日文本
+            StringBuilder buttonText = new StringBuilder();
+            buttonText.append(i);  // 日期数字
+
+            String holiday = HolidayManager.getHoliday(date);
+            if (holiday != null) {
+                buttonText.append("\n").append(holiday);  // 节日
+            }
+
+            // 如果有日程，添加日程数量提示
             if (schedules.containsKey(date) && !Objects.requireNonNull(schedules.get(date)).isEmpty()) {
                 List<Schedule> dateSchedules = schedules.get(date);
                 Schedule.Priority highestPriority = getHighestPriority(dateSchedules);
+
+                // 添加日程数量
+                buttonText.append("\n(").append(dateSchedules.size()).append(")");
+
+                // 设置背景颜色
                 int color;
                 switch (highestPriority) {
                     case HIGH:
@@ -122,20 +151,65 @@ public class CalendarActivity extends AppCompatActivity {
                         color = getResources().getColor(android.R.color.holo_green_light);
                 }
                 dayButton.setBackgroundColor(color);
-                dayButton.setText(String.format("%d\n(%d)", i, dateSchedules.size()));
             }
 
+            dayButton.setText(buttonText.toString());
             dayButton.setOnClickListener(v -> showSchedules(date));
             addButtonToGrid(dayButton);
         }
 
         // 下月日期
-        int remainingCells = 42 - (firstDayOfWeek + monthLength);
+        int totalCells = 42; // 6行7列
+        int remainingCells = totalCells - (firstDayOfWeek + monthLength);
+        LocalDate nextMonth = firstDay.plusMonths(1);
         for (int i = 1; i <= remainingCells; i++) {
-            Button dayButton = createDayButton(String.valueOf(i));
+            LocalDate date = nextMonth.withDayOfMonth(i);
+            Button dayButton = createDayButton(String.valueOf(i), date);
+
+            // 设置日期和节日文本
+            StringBuilder buttonText = new StringBuilder();
+            buttonText.append(i);  // 日期数字
+
+            String holiday = HolidayManager.getHoliday(date);
+            if (holiday != null) {
+                buttonText.append("\n").append(holiday);  // 节日
+            }
+
+            dayButton.setText(buttonText.toString());
             dayButton.setAlpha(0.3f);
             addButtonToGrid(dayButton);
         }
+    }
+
+    private Button createDayButton(String text, LocalDate date) {
+        Button button = new Button(this);
+        button.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        button.setPadding(2, 2, 2, 2);
+        button.setTextSize(11);
+
+        // 使用 LinearLayout 作为按钮的背景
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        button.setLayoutParams(layoutParams);
+
+        // 设置最小高度和宽度
+        button.setMinHeight(50);
+        button.setMinWidth(50);
+
+        return button;
+    }
+
+
+    private void addButtonToGrid(Button button) {
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.width = 0;
+        //params.height = getResources().getDimensionPixelSize(R.dimen.calendar_button_height);
+        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+        params.setMargins(1, 1, 1, 1); // 减小边距
+        button.setLayoutParams(params);
+        calendarGrid.addView(button);
     }
 
     private Schedule.Priority getHighestPriority(List<Schedule> dateSchedules) {
@@ -156,22 +230,9 @@ public class CalendarActivity extends AppCompatActivity {
         return textView;
     }
 
-    private Button createDayButton(String text) {
-        Button button = new Button(this);
-        button.setText(text);
-        button.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        button.setPadding(4, 4, 4, 4);
-        return button;
-    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
 
-    private void addButtonToGrid(Button button) {
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.width = 0;
-        params.height = GridLayout.LayoutParams.WRAP_CONTENT;
-        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-        button.setLayoutParams(params);
-        calendarGrid.addView(button);
-    }
+
 
     private void addViewToGrid(View view) {
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
