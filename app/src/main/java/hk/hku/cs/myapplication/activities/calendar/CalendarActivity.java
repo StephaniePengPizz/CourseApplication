@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -30,6 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import hk.hku.cs.myapplication.R;
+import hk.hku.cs.myapplication.models.Schedule;
 import hk.hku.cs.myapplication.utils.HolidayManager;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
 import android.content.SharedPreferences;

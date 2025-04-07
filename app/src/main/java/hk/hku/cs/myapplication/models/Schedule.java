@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.activities.calendar;
+package hk.hku.cs.myapplication.models;
 
 import android.os.Build;
 import android.util.JsonReader;
