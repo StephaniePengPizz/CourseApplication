@@ -13,25 +13,28 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.MyTimetable"
         android:usesCleartextTraffic="true">
-        <!-- LoginActivity 是默认启动项 -->
+        <!-- LoginActivity是默认启动项 -->
         <activity
             android:name=".activities.auth.LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        </activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity> <!-- 其他 Activity -->
+        <!-- 其他 Activity -->
         <activity
             android:name=".activities.auth.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".activities.course.MyCourseActivity"
             android:exported="false" />
+        <!-- PoolCourseActivity 设置为默认启动项 -->
         <activity
             android:name=".activities.course.PoolCourseActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.course.TableActivity"
             android:exported="false" />
@@ -50,6 +53,9 @@
         <activity
             android:name=".activities.forum.ForumActivity"
             android:exported="false" />
+        <activity
+            android:name=".activities.calendar.CalendarActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

@@ -10,7 +10,10 @@
         android:id="@+id/navigation_my_course"
         android:icon="@drawable/ic_course"
         android:title="My Courses" />
-
+    <item
+        android:id="@+id/navigation_calendar"
+        android:icon="@drawable/ic_course"
+        android:title="Calendar" />
     <!-- 匹配 -->
     <item
         android:id="@+id/navigation_match"
