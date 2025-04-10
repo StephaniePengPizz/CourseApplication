@@ -18,6 +18,7 @@ import java.util.List;
 
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.adapters.MyCourseAdapter;
+import hk.hku.cs.myapplication.models.ApiResponse;
 import hk.hku.cs.myapplication.models.Course;
 import hk.hku.cs.myapplication.models.CourseMyListResponse;
 import hk.hku.cs.myapplication.network.RetrofitClient;
@@ -47,6 +48,7 @@ public class MyCourseActivity extends AppCompatActivity {
 
         // 设置适配器
         courseAdapter = new MyCourseAdapter(courseList);
+        courseAdapter.setOnRemoveCourseClickListener(this::RemoveCourseFromBackend);
         recyclerView.setAdapter(courseAdapter);
 
         loadMyCoursesFromBackend();
@@ -57,11 +59,9 @@ public class MyCourseActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 初始化底部导航栏
+
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));
-
-        // 根据当前 Activity 设置选中项
         bottomNavigationView.setSelectedItemId(R.id.navigation_my_course);
     }
 
@@ -109,6 +109,33 @@ public class MyCourseActivity extends AppCompatActivity {
                 Log.e("API_FAILURE", "Network error", t);
                 Toast.makeText(MyCourseActivity.this,
                         "Network error: " + t.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void RemoveCourseFromBackend(int courseId) {
+        Call<ApiResponse<Void>> call = RetrofitClient.getInstance()
+                .removeCourseForUser(courseId);
+
+        call.enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Void>> call,
+                                   Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().getCode() == 200) {
+                        Toast.makeText(MyCourseActivity.this,
+                                "Course removed successfully",
+                                Toast.LENGTH_SHORT).show();
+                        loadMyCoursesFromBackend(); // Refresh the list
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
+                Toast.makeText(MyCourseActivity.this,
+                        "Failed to remove course",
                         Toast.LENGTH_SHORT).show();
             }
         });

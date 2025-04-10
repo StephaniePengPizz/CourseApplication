@@ -1,56 +1,33 @@
 package hk.hku.cs.myapplication.activities.match;
 
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import hk.hku.cs.myapplication.R;
-import hk.hku.cs.myapplication.models.User;
-import hk.hku.cs.myapplication.adapters.UserAdapter;
+import hk.hku.cs.myapplication.utils.NavigationUtils;
 
 public class MatchResultActivity extends AppCompatActivity {
 
-    private RecyclerView matchResultRecyclerView;
-    private UserAdapter matchResultAdapter;
-    private List<User> matchResultList;
-    private Button backButton;
+    private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_result);
 
-        // 初始化视图
-        matchResultRecyclerView = findViewById(R.id.matchResultRecyclerView);
-        backButton = findViewById(R.id.backButton);
-        
-        // 设置返回按钮的点击事件
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 返回到 MatchActivity
-                Intent intent = new Intent(MatchResultActivity.this, MatchActivity.class);
-                startActivity(intent);
-                finish(); // 结束当前 Activity
-            }
-        });
+        // 获取传递的数据
+        Intent intent = getIntent();
+        String userName = intent.getStringExtra("user_name");
+        int commonCount = intent.getIntExtra("common_count", 0);
 
-        // 初始化数据
-        matchResultList = new ArrayList<>();
-        matchResultList.add(new User("Alice", new ArrayList<>()));
-        matchResultList.add(new User("Bob", new ArrayList<>()));
-
-        // 设置适配器
-        matchResultAdapter = new UserAdapter(matchResultList);
-        matchResultRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        matchResultRecyclerView.setAdapter(matchResultAdapter);
-
+        // 显示数据
+        TextView resultText = findViewById(R.id.resultText);
+        resultText.setText(userName + " - 共同课程: " + commonCount);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));
+        bottomNavigationView.setSelectedItemId(R.id.navigation_match);
     }
 }

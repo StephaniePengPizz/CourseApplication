@@ -1,40 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:padding="16dp">
-
-    <!-- 标题 -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Your Course Schedule"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/purple_800"
-        android:layout_marginTop="80dp" />
-
-    <!-- 课程列表 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/CourseRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="24dp" />
 
     <!-- 匹配按钮 -->
     <Button
         android:id="@+id/matchButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Find Matches"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/purple_500"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp" />
+        android:text="Match"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="80dp"/>
+
+    <!-- 列表视图 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/matchButton"
+        android:layout_above="@id/bottom_navigation"/>
 
     <!-- 底部导航栏 -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -46,4 +32,4 @@
         app:menu="@menu/bottom_navigation_menu"
         app:labelVisibilityMode="labeled"/>
 
-</LinearLayout>
+</RelativeLayout>

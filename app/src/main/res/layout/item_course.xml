@@ -31,6 +31,6 @@
         android:id="@+id/addToMyCourseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add to My Course"
+        android:text="@string/add_to_my_course"
         android:layout_marginTop="8dp"/>
 </LinearLayout>

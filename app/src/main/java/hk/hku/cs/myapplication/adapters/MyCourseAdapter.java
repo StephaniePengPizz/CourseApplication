@@ -21,7 +21,7 @@ import hk.hku.cs.myapplication.models.Course;
 public class MyCourseAdapter extends RecyclerView.Adapter<MyCourseAdapter.CourseViewHolder> {
 
     private List<Course> courseList;
-
+    private OnRemoveCourseClickListener removeCourseListener;
     public MyCourseAdapter(List<Course> courseList) {
         this.courseList = courseList != null ? courseList : new ArrayList<>();
     }
@@ -47,6 +47,12 @@ public class MyCourseAdapter extends RecyclerView.Adapter<MyCourseAdapter.Course
             intent.putExtra("courseName", course.getCourseName());
             context.startActivity(intent);
         });
+
+        holder.removeButton.setOnClickListener(v -> {
+            if (removeCourseListener != null) {
+                removeCourseListener.onRemoveCourseClick(course.getId());
+            }
+        });
     }
 
     @Override
@@ -54,11 +60,19 @@ public class MyCourseAdapter extends RecyclerView.Adapter<MyCourseAdapter.Course
         return courseList.size();
     }
 
+    public interface OnRemoveCourseClickListener {
+        void onRemoveCourseClick(int courseId);
+    }
+
+    public void setOnRemoveCourseClickListener(MyCourseAdapter.OnRemoveCourseClickListener listener) {
+        this.removeCourseListener = listener;
+    }
     static class CourseViewHolder extends RecyclerView.ViewHolder {
         TextView courseNameTextView;
         TextView courseTimeTextView;
         TextView courseLocationTextView;
         Button forumButton;
+        Button removeButton;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +80,7 @@ public class MyCourseAdapter extends RecyclerView.Adapter<MyCourseAdapter.Course
             courseTimeTextView = itemView.findViewById(R.id.courseTimeTextView);
             courseLocationTextView = itemView.findViewById(R.id.courseLocationTextView);
             forumButton = itemView.findViewById(R.id.forumButton);
+            removeButton = itemView.findViewById(R.id.removeButton);
         }
     }
     public void updateCourses(List<Course> newCourses) {

@@ -13,8 +13,10 @@ import hk.hku.cs.myapplication.models.RegisterRequest;
 import hk.hku.cs.myapplication.models.LoginRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -33,11 +35,18 @@ public interface ApiService {
     @GET("api/v1/main/user/courses")
     Call<CourseMyListResponse> getMyCourses();
 
-    // 添加课程基本信息
+    // 添加池子课程
     @POST("/api/v1/main/course")
     Call<ApiResponse<Course>> createCourse(@Body AddCourseRequest courseRequest);
 
     // 添加课程时间表
     @POST("/api/v1/main/course/schedule")
     Call<ApiResponse<Course.Schedule>> addCourseSchedule(@Body AddScheduleRequest scheduleRequest);
+
+    @POST("/api/v1/main/user/course/{course_id}")
+    Call<ApiResponse<Void>> addCourseToUser(@Path("course_id") int courseId);
+
+    @DELETE("/api/v1/main/user/course/{course_id}")
+    Call<ApiResponse<Void>> removeCourseForUser(@Path("course_id") int courseId);
+
 }

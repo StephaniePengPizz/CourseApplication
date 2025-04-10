@@ -1,40 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
-    <!-- 标题 -->
+
+    <!-- 结果文本居中显示 -->
     <TextView
-        android:id="@+id/titleTextView"
+        android:id="@+id/resultText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/match_results"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/purple_800"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="100dp"
-        android:layout_centerHorizontal="true" />
+        android:textSize="18sp"
+        android:layout_centerInParent="true"/>
 
-    <!-- 匹配结果列表 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/matchResultRecyclerView"
+    <!-- 底部导航栏固定在底部 -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/titleTextView"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- 返回按钮 -->
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/back"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="@string/back_button_description" />
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/bottom_navigation_menu"
+        app:labelVisibilityMode="labeled"/>
 
 </RelativeLayout>

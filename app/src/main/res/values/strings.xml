@@ -13,6 +13,9 @@
     <string name="back_button_description">Back</string>
     <string name="back">Back</string>
     <string name="match_results">Match Results</string>
+    <string name="add_to_my_course">Add to My Course</string>
+    <string name="contact">contact</string>
+    <string name="find_matches">Find Matches</string>
     <string-array name="days_of_week">
         <item>Monday</item>
         <item>Tuesday</item>

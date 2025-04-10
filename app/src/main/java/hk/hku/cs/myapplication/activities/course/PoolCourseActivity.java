@@ -60,6 +60,7 @@ public class PoolCourseActivity extends AppCompatActivity {
 
         // 设置适配器
         courseAdapter = new CourseAdapter(courseList);
+        courseAdapter.setOnAddCourseClickListener(this::addToMyCoursesToBackend);
         recyclerView.setAdapter(courseAdapter);
 
         // 添加课程按钮点击事件
@@ -71,6 +72,38 @@ public class PoolCourseActivity extends AppCompatActivity {
 
         // 根据当前 Activity 设置选中项
         bottomNavigationView.setSelectedItemId(R.id.navigation_pool_course);
+    }
+
+    private void addToMyCoursesToBackend(int courseId) {
+        Call<ApiResponse<Void>> call = RetrofitClient.getInstance().addCourseToUser(courseId);
+        call.enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Void> apiResponse = response.body();
+                    if (apiResponse.getCode() == 200) {
+                        Toast.makeText(PoolCourseActivity.this,
+                                "Course added to your list successfully",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(PoolCourseActivity.this,
+                                "Failed to add course: " + apiResponse.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(PoolCourseActivity.this,
+                            "Failed to add course",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
+                Toast.makeText(PoolCourseActivity.this,
+                        "Network error: " + t.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadPoolCoursesFromBackend() {
