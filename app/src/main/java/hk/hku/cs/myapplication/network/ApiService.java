@@ -11,6 +11,8 @@ import hk.hku.cs.myapplication.models.CourseMyListResponse;
 import hk.hku.cs.myapplication.models.LoginResponse;
 import hk.hku.cs.myapplication.models.RegisterRequest;
 import hk.hku.cs.myapplication.models.LoginRequest;
+import hk.hku.cs.myapplication.models.User;
+import hk.hku.cs.myapplication.models.UserInfoResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -48,5 +50,8 @@ public interface ApiService {
 
     @DELETE("/api/v1/main/user/course/{course_id}")
     Call<ApiResponse<Void>> removeCourseForUser(@Path("course_id") int courseId);
+
+    @GET("/api/v1/main/user/me")
+    Call<UserInfoResponse> getMyInfo();
 
 }

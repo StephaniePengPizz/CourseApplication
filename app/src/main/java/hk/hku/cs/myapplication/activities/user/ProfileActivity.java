@@ -7,42 +7,64 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.activities.auth.LoginActivity;
+import hk.hku.cs.myapplication.activities.course.MyCourseActivity;
+import hk.hku.cs.myapplication.adapters.MyCourseAdapter;
+import hk.hku.cs.myapplication.models.Course;
+import hk.hku.cs.myapplication.models.CourseMyListResponse;
+import hk.hku.cs.myapplication.models.UserInfoResponse;
+import hk.hku.cs.myapplication.network.RetrofitClient;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "UserPrefs";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_USER_NAME = "userName";
+    private static final String KEY_USER_EMAIL = "userEmail";
     private static final String KEY_USER_BIO = "userBio";
     private TextView userNameTextView;
     private TextView userBioTextView;
+    private TextView userEmailTextView;
     private String currentName = "John Doe"; // 默认姓名
     private String currentBio = "Hello, I'm a student at HKU!"; // 默认简介
     private BottomNavigationView bottomNavigationView;
     private Button editButton;
     private Button logoutButton;
+    private MyCourseAdapter courseAdapter;
+    private List<Course> courseList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        courseAdapter = new MyCourseAdapter(courseList);
+
         // 初始化视图
         userNameTextView = findViewById(R.id.userNameTextView);
+        userEmailTextView = findViewById(R.id.userEmailTextView);
         userBioTextView = findViewById(R.id.userBioTextView);
 
         editButton = findViewById(R.id.editProfileButton);
         logoutButton = findViewById(R.id.logoutButton);
 
         checkLoginStatus();
-
+        loadMyInfoFromBackend();
         // 编辑个人资料按钮点击事件
 
         editButton.setOnClickListener(v -> {
@@ -110,5 +132,47 @@ public class ProfileActivity extends AppCompatActivity {
             userNameTextView.setText(currentName);
             userBioTextView.setText(currentBio);
         }
+    }
+    private void loadMyInfoFromBackend() {
+        Call<UserInfoResponse> call = RetrofitClient.getInstance().getMyInfo();
+        call.enqueue(new Callback<UserInfoResponse>() {
+            @Override
+            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
+
+                if (response.isSuccessful() && response.body() != null) {
+                    UserInfoResponse userResponse = response.body();
+                    if (userResponse.getCode() == 200) {
+                        UserInfoResponse.Data userData = userResponse.getData();
+
+                        // 更新UI
+                        userNameTextView.setText(userData.getUsername());
+                        userEmailTextView.setText(userData.getEmail());
+
+                        // 保存到SharedPreferences
+                        getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+                                .edit()
+                                .putString(KEY_USER_NAME, userData.getUsername())
+                                .putString(KEY_USER_EMAIL, userData.getEmail())
+                                .apply();
+                    } else {
+                        Toast.makeText(ProfileActivity.this,
+                                "Error: " + userResponse.getMsg(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(ProfileActivity.this,
+                            "Failed to load user info",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInfoResponse> call, Throwable t) {
+                Log.e("API_FAILURE", "Network error", t);
+                Toast.makeText(ProfileActivity.this,
+                        "Network error: " + t.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
