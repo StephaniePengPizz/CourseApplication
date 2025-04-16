@@ -14,16 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.activities.auth.LoginActivity;
-import hk.hku.cs.myapplication.activities.course.MyCourseActivity;
-import hk.hku.cs.myapplication.adapters.MyCourseAdapter;
-import hk.hku.cs.myapplication.models.Course;
-import hk.hku.cs.myapplication.models.CourseMyListResponse;
 import hk.hku.cs.myapplication.models.UserInfoResponse;
 import hk.hku.cs.myapplication.network.RetrofitClient;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
@@ -45,15 +37,11 @@ public class ProfileActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private Button editButton;
     private Button logoutButton;
-    private MyCourseAdapter courseAdapter;
-    private List<Course> courseList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-        courseAdapter = new MyCourseAdapter(courseList);
 
         // 初始化视图
         userNameTextView = findViewById(R.id.userNameTextView);
