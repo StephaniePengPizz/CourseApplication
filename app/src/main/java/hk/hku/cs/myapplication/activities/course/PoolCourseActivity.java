@@ -1,12 +1,10 @@
 package hk.hku.cs.myapplication.activities.course;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -52,13 +50,11 @@ public class PoolCourseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pool_course);
 
-        // 初始化 RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadPoolCoursesFromBackend();
 
-        // 设置适配器
         courseAdapter = new CourseAdapter(courseList);
         courseAdapter.setOnAddCourseClickListener(this::addToMyCoursesToBackend);
         recyclerView.setAdapter(courseAdapter);
@@ -66,11 +62,8 @@ public class PoolCourseActivity extends AppCompatActivity {
         // 添加课程按钮点击事件
         findViewById(R.id.addCourseButton).setOnClickListener(v -> showAddCourseDialog());
 
-        // 初始化底部导航栏
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));
-
-        // 根据当前 Activity 设置选中项
         bottomNavigationView.setSelectedItemId(R.id.navigation_pool_course);
     }
 

@@ -31,11 +31,9 @@ public class TableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table);
 
-        // 初始化视图
         tableLayout = findViewById(R.id.tableLayout);
         switchButton = findViewById(R.id.switchButton);
 
-        // 初始化默认课程表
         courseList = new ArrayList<>();
         //courseList.add(new Course("11", "Math", "09:00 AM", "Room 101", "Mon", 1));
         //courseList.add(new Course("21","Science", "10:00 AM", "Room 102", "Tue", 1));
@@ -51,7 +49,6 @@ public class TableActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 初始化底部导航栏
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));
 

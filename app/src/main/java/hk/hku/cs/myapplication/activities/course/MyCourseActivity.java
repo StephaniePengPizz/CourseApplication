@@ -141,7 +141,6 @@ public class MyCourseActivity extends AppCompatActivity {
         });
     }
     private void showEmptyState() {
-        // 可以显示一个TextView提示"没有课程"
         Toast.makeText(this, "No courses available", Toast.LENGTH_SHORT).show();
     }
 

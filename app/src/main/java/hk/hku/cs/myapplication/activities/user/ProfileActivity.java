@@ -79,10 +79,8 @@ public class ProfileActivity extends AppCompatActivity {
             finish();
         });
 
-        // 初始化底部导航栏
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));
-        // 根据当前 Activity 设置选中项
         bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
     }
     private void checkLoginStatus() {
@@ -100,7 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         }
         else{
-            Log.d("profile", "nononononono");
+            Log.d("profile", "not login in");
         }
     }
 
