@@ -37,6 +37,42 @@
         android:layout_marginBottom="16dp"
         android:layout_below="@id/editNameEditText" />
 
+    <EditText
+        android:id="@+id/editEmailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="xxxxx@connect.hku.hk"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"
+        android:layout_below="@id/editBioEditText" />
+
+    <EditText
+        android:id="@+id/editSchoolEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Department"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"
+        android:layout_below="@id/editEmailEditText" />
+
+    <EditText
+        android:id="@+id/editMajorEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Major"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"
+        android:layout_below="@id/editSchoolEditText" />
+
+    <EditText
+        android:id="@+id/editRegisterYearEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Register Year"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"
+        android:layout_below="@id/editMajorEditText" />
+
     <!-- 保存按钮 -->
     <Button
         android:id="@+id/saveProfileButton"
@@ -47,7 +83,7 @@
         android:textColor="@color/white"
         android:backgroundTint="@color/purple_500"
         android:padding="16dp"
-        android:layout_below="@id/editBioEditText"/>
+        android:layout_below="@id/editRegisterYearEditText"/>
 
 
 </RelativeLayout>

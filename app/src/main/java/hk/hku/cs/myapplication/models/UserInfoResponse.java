@@ -27,6 +27,10 @@ public class UserInfoResponse {
         private String username;
         private String email;
 
+        private String school;
+        private String major;
+        private String registeryear;
+
         public int getId(){
             return id;
         }
@@ -38,6 +42,18 @@ public class UserInfoResponse {
         @NonNull
         public String getEmail() {
             return email != null ? email : "";
+        }
+        @NonNull
+        public String getSchool() {
+            return school != null ? school : "";
+        }
+        @NonNull
+        public String getMajor() {
+            return major != null ? major : "";
+        }
+        @NonNull
+        public String getRegisterYear() {
+            return registeryear != null ? registeryear : "";
         }
     }
 }

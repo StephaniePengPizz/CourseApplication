@@ -1,5 +1,7 @@
 package hk.hku.cs.myapplication.activities.user;
 
+import static android.view.Gravity.apply;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,11 +31,26 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String KEY_USER_NAME = "userName";
     private static final String KEY_USER_EMAIL = "userEmail";
     private static final String KEY_USER_BIO = "userBio";
+
+    private static final String KEY_USER_SCHOOL = "userSchool";
+    private static final String KEY_USER_MAJOR = "userMajor";
+    private static final String KEY_USER_REGISTERYEAR = "userRegisterYear";
+
     private TextView userNameTextView;
     private TextView userBioTextView;
     private TextView userEmailTextView;
+
+    private TextView userSchoolTextView;
+    private TextView userMajorTextView;
+    private TextView userRegisterYearTextView;
+
     private String currentName = "John Doe"; // 默认姓名
     private String currentBio = "Hello, I'm a student at HKU!"; // 默认简介
+
+    private String currentSchool = "Department of Engineering"; // 学院
+    private String currentMajor = "Computer Science"; // 默认专业
+    private String currentRegisterYear = "2024"; // 默认注册年份
+
     private BottomNavigationView bottomNavigationView;
     private Button editButton;
     private Button logoutButton;
@@ -48,6 +65,10 @@ public class ProfileActivity extends AppCompatActivity {
         userEmailTextView = findViewById(R.id.userEmailTextView);
         userBioTextView = findViewById(R.id.userBioTextView);
 
+        userSchoolTextView = findViewById(R.id.userSchoolContentTextView);
+        userMajorTextView = findViewById(R.id.userMajorContentTextView);
+        userRegisterYearTextView = findViewById(R.id.userRegisterYearContentTextView);
+
         editButton = findViewById(R.id.editProfileButton);
         logoutButton = findViewById(R.id.logoutButton);
 
@@ -59,6 +80,9 @@ public class ProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
             intent.putExtra("currentName", currentName);
             intent.putExtra("currentBio", currentBio);
+            intent.putExtra("currentSchool", currentSchool);
+            intent.putExtra("currentMajor", currentMajor);
+            intent.putExtra("currentRegisterYear", currentRegisterYear);
             startActivity(intent);
         });
         logoutButton.setOnClickListener(v -> {
@@ -71,8 +95,17 @@ public class ProfileActivity extends AppCompatActivity {
             // 重置为默认值
             currentName = "John Doe";
             currentBio = "Hello, I'm a student at HKU!";
+
+            currentSchool = "Engineering";
+            currentMajor = "Computer Science";
+            currentRegisterYear = "2024";
+
             userNameTextView.setText(currentName);
             userBioTextView.setText(currentBio);
+
+            userSchoolTextView.setText(currentSchool);
+            userMajorTextView.setText(currentMajor);
+            userRegisterYearTextView.setText(currentRegisterYear);
 
             // 跳转到登录页面
             startActivity(new Intent(this, LoginActivity.class));
@@ -92,8 +125,17 @@ public class ProfileActivity extends AppCompatActivity {
             currentName = prefs.getString(KEY_USER_NAME, currentName);
             currentBio = prefs.getString(KEY_USER_BIO, currentBio);
 
+            currentSchool = prefs.getString(KEY_USER_SCHOOL, currentSchool);
+            currentMajor = prefs.getString(KEY_USER_MAJOR, currentMajor);
+            currentRegisterYear = prefs.getString(KEY_USER_REGISTERYEAR, currentRegisterYear);
+
             userNameTextView.setText(currentName);
             userBioTextView.setText(currentBio);
+
+            userSchoolTextView.setText(currentSchool);
+            userMajorTextView.setText(currentMajor);
+            userRegisterYearTextView.setText(currentRegisterYear);
+
             logoutButton.setVisibility(View.VISIBLE);
 
         }
@@ -114,9 +156,17 @@ public class ProfileActivity extends AppCompatActivity {
             currentName = data.getStringExtra("newName");
             currentBio = data.getStringExtra("newBio");
 
+            currentSchool = data.getStringExtra("newSchool");
+            currentMajor = data.getStringExtra("newMajor");
+            currentRegisterYear = data.getStringExtra("newRegisterYear");
+
             // 更新界面
             userNameTextView.setText(currentName);
             userBioTextView.setText(currentBio);
+
+            userSchoolTextView.setText(currentSchool);
+            userMajorTextView.setText(currentMajor);
+            userRegisterYearTextView.setText(currentRegisterYear);
         }
     }
     private void loadMyInfoFromBackend() {
@@ -134,11 +184,18 @@ public class ProfileActivity extends AppCompatActivity {
                         userNameTextView.setText(userData.getUsername());
                         userEmailTextView.setText(userData.getEmail());
 
+                        userSchoolTextView.setText(userData.getSchool());
+                        userMajorTextView.setText(userData.getMajor());
+                        userRegisterYearTextView.setText(userData.getRegisterYear());
+
                         // 保存到SharedPreferences
                         getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
                                 .edit()
                                 .putString(KEY_USER_NAME, userData.getUsername())
                                 .putString(KEY_USER_EMAIL, userData.getEmail())
+                                .putString(KEY_USER_SCHOOL, userData.getSchool())
+                                .putString(KEY_USER_MAJOR, userData.getMajor())
+                                .putString(KEY_USER_REGISTERYEAR, userData.getRegisterYear())
                                 .apply();
                     } else {
                         Toast.makeText(ProfileActivity.this,
