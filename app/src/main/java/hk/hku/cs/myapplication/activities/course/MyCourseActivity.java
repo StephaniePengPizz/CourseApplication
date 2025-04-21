@@ -35,7 +35,6 @@ public class MyCourseActivity extends AppCompatActivity {
     private List<Course> courseList = new ArrayList<>();
     private BottomNavigationView bottomNavigationView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +51,12 @@ public class MyCourseActivity extends AppCompatActivity {
         recyclerView.setAdapter(courseAdapter);
 
         loadMyCoursesFromBackend();
-        int a = 0;
+
         // 切换按钮点击事件
         switchButton.setOnClickListener(v -> {
             Intent intent = new Intent(MyCourseActivity.this, TableActivity.class);
             startActivity(intent);
         });
-
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));
@@ -78,7 +76,7 @@ public class MyCourseActivity extends AppCompatActivity {
 
                     if (courseResponse != null) {
                         if (courseResponse.getCode() == 200) {
-                            List<Course> courses = courseResponse.getData(); // 注意这里改为getData()
+                            List<Course> courses = courseResponse.getData();
                             if (courses != null && !courses.isEmpty()) {
                                 courseAdapter.updateCourses(courses);
                             } else {
@@ -114,7 +112,8 @@ public class MyCourseActivity extends AppCompatActivity {
         });
     }
 
-    public void RemoveCourseFromBackend(int courseId) {
+    public void RemoveCourseFromBackend(Course course) {
+        int courseId = course.getId();
         Call<ApiResponse<Void>> call = RetrofitClient.getInstance()
                 .removeCourseForUser(courseId);
 
@@ -127,7 +126,7 @@ public class MyCourseActivity extends AppCompatActivity {
                         Toast.makeText(MyCourseActivity.this,
                                 "Course removed successfully",
                                 Toast.LENGTH_SHORT).show();
-                        loadMyCoursesFromBackend(); // Refresh the list
+                        loadMyCoursesFromBackend();
                     }
                 }
             }
@@ -140,8 +139,9 @@ public class MyCourseActivity extends AppCompatActivity {
             }
         });
     }
+
     private void showEmptyState() {
         Toast.makeText(this, "No courses available", Toast.LENGTH_SHORT).show();
     }
-
 }
+

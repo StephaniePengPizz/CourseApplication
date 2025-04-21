@@ -12,18 +12,19 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
 public class RetrofitClient {
     private static final String BASE_URL = "http://course.shamming.cn/";
     private static Retrofit retrofit;
-    private static Context appContext; // 添加静态Context引用
+    private static ApiService apiService;
+    private static Context appContext;
+
     public static void initialize(Context context) {
         appContext = context.getApplicationContext();
     }
 
-    // 添加自定义DNS解析（解决UnknownHostException的报错）
     private static final okhttp3.Dns customDns = hostname -> {
         if (hostname.equals("course.shamming.cn")) {
-            // 如果域名解析失败，尝试直接使用IP
             return java.util.Arrays.asList(
                     java.net.InetAddress.getByName("210.6.94.233")
             );
@@ -32,24 +33,21 @@ public class RetrofitClient {
     };
 
     public static ApiService getInstance() {
-        if (retrofit == null) {
+        if (apiService == null) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(30, TimeUnit.SECONDS)  // 连接超时
-                    .readTimeout(30, TimeUnit.SECONDS)     // 读取超时
-                    .writeTimeout(30, TimeUnit.SECONDS)    // 写入超时
-
-                    .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .addInterceptor(logging)
                     .addInterceptor(chain -> {
                         if (appContext == null) {
                             throw new IllegalStateException("RetrofitClient not initialized. Call RetrofitClient.initialize(context) first.");
                         }
-                        // 自动添加token到请求头
                         Request original = chain.request();
                         SharedPreferences prefs = appContext.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-                        // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
                         String token = prefs.getString("authToken", "");
 
                         if (!token.isEmpty()) {
@@ -60,8 +58,30 @@ public class RetrofitClient {
                         }
                         return chain.proceed(original);
                     })
-                    .dns(customDns)  // 使用自定义DNS
-                    .retryOnConnectionFailure(true)  // 自动重试
+                    .dns(customDns)
+                    .retryOnConnectionFailure(true)
+                    .build();
+
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            apiService = retrofit.create(ApiService.class);
+        }
+        return apiService;
+    }
+
+    public static Retrofit getRetrofit() {
+        if (retrofit == null) {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .dns(customDns)
+                    .retryOnConnectionFailure(true)
                     .build();
 
             retrofit = new Retrofit.Builder()
@@ -70,6 +90,6 @@ public class RetrofitClient {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        return retrofit.create(ApiService.class);
+        return retrofit;
     }
 }
