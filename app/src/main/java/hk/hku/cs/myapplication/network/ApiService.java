@@ -54,4 +54,13 @@ public interface ApiService {
     @GET("/api/v1/main/user/me")
     Call<UserInfoResponse> getMyInfo();
 
+    @GET("/api/v1/main/user/favorite")
+    Call<CourseMyListResponse> getFavoriteCourses();
+
+    @POST("/api/v1/main/user/favorite/{course_id}")
+    Call<ApiResponse<Void>> addCourseToFavorites(@Path("course_id") int courseId);
+
+    @DELETE("/api/v1/main/user/favorite/{course_id}")
+    Call<ApiResponse<Void>> removeCourseFromFavorites(@Path("course_id") int courseId);
+
 }

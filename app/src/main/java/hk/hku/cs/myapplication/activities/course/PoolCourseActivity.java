@@ -29,6 +29,7 @@ import hk.hku.cs.myapplication.models.Course;
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.adapters.CourseAdapter;
 import hk.hku.cs.myapplication.models.CourseListResponse;
+import hk.hku.cs.myapplication.models.CourseMyListResponse;
 import hk.hku.cs.myapplication.network.RetrofitClient;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
 import hk.hku.cs.myapplication.models.ForumManager;
@@ -36,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PoolCourseActivity extends AppCompatActivity {
+public class PoolCourseActivity extends AppCompatActivity implements CourseAdapter.OnFavoriteClickListener {
 
     private RecyclerView recyclerView;
     private CourseAdapter courseAdapter;
@@ -57,6 +58,7 @@ public class PoolCourseActivity extends AppCompatActivity {
 
         courseAdapter = new CourseAdapter(courseList);
         courseAdapter.setOnAddCourseClickListener(this::addToMyCoursesToBackend);
+        courseAdapter.setOnFavoriteClickListener(this);
         recyclerView.setAdapter(courseAdapter);
 
         // 添加课程按钮点击事件
@@ -98,6 +100,55 @@ public class PoolCourseActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onAddFavorite(int courseId) {
+        Call<ApiResponse<Void>> call = RetrofitClient.getInstance().addCourseToFavorites(courseId);
+        call.enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Void> apiResponse = response.body();
+                    if (apiResponse.getCode() == 200) {
+                        Toast.makeText(PoolCourseActivity.this, "Course added to favorites", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(PoolCourseActivity.this, "Failed to add to favorites: " + apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(PoolCourseActivity.this, "Failed to add to favorites", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
+                Toast.makeText(PoolCourseActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    @Override
+    public void onRemoveFavorite(int courseId) {
+        Call<ApiResponse<Void>> call = RetrofitClient.getInstance().removeCourseFromFavorites(courseId);
+        call.enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Void> apiResponse = response.body();
+                    if (apiResponse.getCode() == 200) {
+                        Toast.makeText(PoolCourseActivity.this, "Course removed from favorites", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(PoolCourseActivity.this, "Failed to remove from favorites: " + apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(PoolCourseActivity.this, "Failed to remove from favorites", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
+                Toast.makeText(PoolCourseActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     private void loadPoolCoursesFromBackend() {
         Call<CourseListResponse> call = RetrofitClient.getInstance().getCourses(null, null, null, 1, 20);
@@ -110,6 +161,7 @@ public class PoolCourseActivity extends AppCompatActivity {
                     if (courseResponse.getCode() == 200 && courseResponse.getData() != null) {
                         List<Course> courseList = courseResponse.getCourses();
                         courseAdapter.updateCourses(courseList);
+                        loadFavoriteCourses();
                         Log.d("API Response", courseResponse.toString());
                     }
                 }
@@ -118,6 +170,36 @@ public class PoolCourseActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<CourseListResponse> call, Throwable t) {
                 //courseAdapter.updateCourses(courseList);
+                Toast.makeText(PoolCourseActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void loadFavoriteCourses() {
+        Call<CourseMyListResponse> call = RetrofitClient.getInstance().getFavoriteCourses();
+        call.enqueue(new Callback<CourseMyListResponse>() {
+            @Override
+            public void onResponse(Call<CourseMyListResponse> call, Response<CourseMyListResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    CourseMyListResponse courseResponse = response.body();
+                    List<Course> favoriteCourses = courseResponse.getData();
+                    List<Course> currentCourses = courseAdapter.getCourseList();
+                    for (Course course : currentCourses) {
+                        // Check if the course is in the favoriteCourses list by matching IDs
+                        for (Course favoriteCourse : favoriteCourses) {
+                            if (course.getId() == favoriteCourse.getId()) {
+                                course.setFavorite(true);
+                                break;
+                            }
+                        }
+                    }
+                    courseAdapter.updateCourses(currentCourses);
+                } else {
+                    Toast.makeText(PoolCourseActivity.this, "Failed to load favorite courses", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CourseMyListResponse> call, Throwable t) {
                 Toast.makeText(PoolCourseActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

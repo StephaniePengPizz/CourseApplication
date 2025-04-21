@@ -20,6 +20,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     private List<Course> courseList;
     private OnAddCourseClickListener addCourseListener;
+    private OnFavoriteClickListener favoriteClickListener;
 
     public CourseAdapter(List<Course> courseList) {
         this.courseList = courseList != null ? courseList : new ArrayList<>();
@@ -44,6 +45,23 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 addCourseListener.onAddCourseClick(course.getId());
             }
         });
+        boolean isFavorite = course.isFavorite();
+        holder.favoriteButton.setText(isFavorite ? "Unfavorite" : "Favorite");
+
+        holder.favoriteButton.setOnClickListener(v -> {
+            if (course.isFavorite()) {
+                course.setFavorite(false);
+                if (favoriteClickListener != null) {
+                    favoriteClickListener.onRemoveFavorite(course.getId());
+                }
+            } else {
+                course.setFavorite(true);
+                if (favoriteClickListener != null) {
+                    favoriteClickListener.onAddFavorite(course.getId());
+                }
+            }
+            notifyItemChanged(position);
+        });
 
     }
 
@@ -60,16 +78,24 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         this.addCourseListener = listener;
     }
 
+    public interface OnFavoriteClickListener {
+        void onAddFavorite(int courseId);
+        void onRemoveFavorite(int courseId);
+    }
+    public void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
+        this.favoriteClickListener = listener;
+    }
     static class CourseViewHolder extends RecyclerView.ViewHolder {
         TextView courseNameTextView;
         TextView courseTimeTextView;
         TextView courseLocationTextView;
         Button addToMyCourseButton;
-
+        Button favoriteButton;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
             addToMyCourseButton = itemView.findViewById(R.id.addToMyCourseButton);
+            favoriteButton = itemView.findViewById(R.id.favoriteButton);
             courseNameTextView = itemView.findViewById(R.id.courseNameTextView);
             courseTimeTextView = itemView.findViewById(R.id.courseTimeTextView);
             courseLocationTextView = itemView.findViewById(R.id.courseLocationTextView);
@@ -79,5 +105,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public void updateCourses(List<Course> newCourses) {
         this.courseList = newCourses;
         notifyDataSetChanged();
+    }
+    public List<Course> getCourseList() {
+        return courseList;
     }
 }

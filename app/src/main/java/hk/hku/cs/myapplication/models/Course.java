@@ -10,6 +10,7 @@ public class Course {
     private String course_description;
     private String semester;
     private int created_by;
+    private boolean isFavorite;
     private List<Teacher> course_teachers;
     private List<Schedule> course_schedules;
 
@@ -27,6 +28,7 @@ public class Course {
         this.course_description = description;
         this.semester = semester;
         this.created_by = createdBy;
+
     }
 
     // 嵌套教师类
@@ -101,7 +103,6 @@ public class Course {
         public String getLocation() { return location; }
         public void setLocation(String location) { this.location = location; }
 
-        // 实用方法
         public String getDisplayTime() {
             return String.format("%s %s-%s",
                     getDayOfWeek(), getStartTime(), getEndTime());
@@ -138,7 +139,12 @@ public class Course {
     public List<Schedule> getSchedules() { return course_schedules; }
     public void setSchedules(List<Schedule> schedules) { this.course_schedules = schedules; }
 
-    // 实用方法
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
     public void addTeacher(Teacher teacher) {
         if (course_teachers == null) {
             course_teachers = new ArrayList<>();
