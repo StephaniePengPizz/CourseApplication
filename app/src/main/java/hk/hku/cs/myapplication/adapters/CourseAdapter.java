@@ -46,7 +46,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             }
         });
         boolean isFavorite = course.isFavorite();
-        holder.favoriteButton.setText(isFavorite ? "Unfavorite" : "Favorite");
+        holder.favoriteButton.setText(isFavorite ? "⭐️" : "☆");
 
         holder.favoriteButton.setOnClickListener(v -> {
             if (course.isFavorite()) {

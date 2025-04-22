@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,8 +53,7 @@ public class PoolCourseActivity extends AppCompatActivity implements CourseAdapt
         setContentView(R.layout.activity_pool_course);
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         loadPoolCoursesFromBackend();
 
         courseAdapter = new CourseAdapter(courseList);
