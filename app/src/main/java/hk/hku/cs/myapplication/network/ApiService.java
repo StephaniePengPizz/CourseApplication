@@ -8,7 +8,9 @@ import hk.hku.cs.myapplication.models.ApiResponse;
 import hk.hku.cs.myapplication.models.Course;
 import hk.hku.cs.myapplication.models.CourseListResponse;
 import hk.hku.cs.myapplication.models.CourseMyListResponse;
+import hk.hku.cs.myapplication.models.ForumItem;
 import hk.hku.cs.myapplication.models.LoginResponse;
+import hk.hku.cs.myapplication.models.PostForumRequest;
 import hk.hku.cs.myapplication.models.RegisterRequest;
 import hk.hku.cs.myapplication.models.LoginRequest;
 import hk.hku.cs.myapplication.models.User;
@@ -73,4 +75,12 @@ public interface ApiService {
 
     @GET("/api/v1/main/course/{course_id}")
     Call<ApiResponse<Course>> getCourseDetails(@Path("course_id") int courseId);
+    @GET("/api/v1/main/forum/{course_id}")
+    Call<ApiResponse<List<ForumItem>>> getForumMessages(@Path("course_id") int courseId);
+
+
+    // 发布一条论坛消息
+    @POST("/api/v1/main/forum")
+    Call<Void> postForumMessage(@Body PostForumRequest request);
+
 }

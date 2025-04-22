@@ -18,25 +18,38 @@ import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.activities.forum.ForumActivity;
 import hk.hku.cs.myapplication.models.Course;
 
-public class MyCourseAdapter extends RecyclerView.Adapter<MyCourseAdapter.CourseViewHolder> {
+public class MyCourseAdapter extends RecyclerView.Adapter<MyCourseAdapter.ViewHolder> {
 
-    private List<Course> courseList;
-    private OnRemoveCourseClickListener removeCourseListener;
-    public MyCourseAdapter(List<Course> courseList) {
-        this.courseList = courseList != null ? courseList : new ArrayList<>();
+    private List<Course> myCourses;
+    private OnRemoveCourseClickListener removeCourseClickListener;
+
+    public MyCourseAdapter(List<Course> myCourses) {
+        this.myCourses = myCourses;
+    }
+
+    public interface OnRemoveCourseClickListener {
+        void onRemoveCourse(Course course);
+    }
+
+    public void setOnRemoveCourseClickListener(OnRemoveCourseClickListener listener) {
+        this.removeCourseClickListener = listener;
+    }
+
+    public void updateCourses(List<Course> newCourses) {
+        this.myCourses = newCourses;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // 使用自定义布局
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_course, parent, false);
-        return new CourseViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
-        Course course = courseList.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Course course = myCourses.get(position);
         holder.courseNameTextView.setText(course.getCourseName());
         holder.courseTimeTextView.setText(course.getPrimaryScheduleTime());
         holder.courseLocationTextView.setText(course.getPrimaryLocation());
@@ -44,37 +57,28 @@ public class MyCourseAdapter extends RecyclerView.Adapter<MyCourseAdapter.Course
         holder.forumButton.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent intent = new Intent(context, ForumActivity.class);
+            intent.putExtra("courseId", course.getId());
             intent.putExtra("courseName", course.getCourseName());
             context.startActivity(intent);
         });
 
         holder.removeButton.setOnClickListener(v -> {
-            if (removeCourseListener != null) {
-                removeCourseListener.onRemoveCourseClick(course.getId());
+            if (removeCourseClickListener != null) {
+                removeCourseClickListener.onRemoveCourse(course);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return courseList.size();
+        return myCourses.size();
     }
 
-    public interface OnRemoveCourseClickListener {
-        void onRemoveCourseClick(int courseId);
-    }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView courseNameTextView, courseTimeTextView, courseLocationTextView;
+        Button forumButton, removeButton;
 
-    public void setOnRemoveCourseClickListener(MyCourseAdapter.OnRemoveCourseClickListener listener) {
-        this.removeCourseListener = listener;
-    }
-    static class CourseViewHolder extends RecyclerView.ViewHolder {
-        TextView courseNameTextView;
-        TextView courseTimeTextView;
-        TextView courseLocationTextView;
-        Button forumButton;
-        Button removeButton;
-
-        public CourseViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             courseNameTextView = itemView.findViewById(R.id.courseNameTextView);
             courseTimeTextView = itemView.findViewById(R.id.courseTimeTextView);
@@ -82,9 +86,5 @@ public class MyCourseAdapter extends RecyclerView.Adapter<MyCourseAdapter.Course
             forumButton = itemView.findViewById(R.id.forumButton);
             removeButton = itemView.findViewById(R.id.removeButton);
         }
-    }
-    public void updateCourses(List<Course> newCourses) {
-        this.courseList = newCourses;
-        notifyDataSetChanged();
     }
 }
