@@ -2,6 +2,7 @@ package hk.hku.cs.myapplication.models;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Course {
     private int id;
@@ -188,5 +189,18 @@ public class Course {
     public String toString() {
         return String.format("%s - %s (%s)",
                 course_code, course_name, semester);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return id == course.id; // Compare by course ID
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

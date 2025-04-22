@@ -5,24 +5,25 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- 匹配按钮 -->
+    <!-- Match button -->
     <Button
         android:id="@+id/matchButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Match"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="80dp"/>
+        android:layout_marginTop="80dp" />
 
-    <!-- 列表视图 -->
+    <!-- RecyclerView for matched users -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/matchButton"
-        android:layout_above="@id/bottom_navigation"/>
+        android:layout_above="@id/bottom_navigation"
+        android:layout_marginTop="16dp"/>
 
-    <!-- 底部导航栏 -->
+    <!-- Bottom navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -30,6 +31,5 @@
         android:layout_alignParentBottom="true"
         android:background="?android:attr/windowBackground"
         app:menu="@menu/bottom_navigation_menu"
-        app:labelVisibilityMode="labeled"/>
-
+        app:labelVisibilityMode="labeled" />
 </RelativeLayout>

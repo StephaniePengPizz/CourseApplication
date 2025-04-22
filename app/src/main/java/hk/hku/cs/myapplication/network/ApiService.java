@@ -12,6 +12,8 @@ import hk.hku.cs.myapplication.models.LoginResponse;
 import hk.hku.cs.myapplication.models.RegisterRequest;
 import hk.hku.cs.myapplication.models.LoginRequest;
 import hk.hku.cs.myapplication.models.User;
+import hk.hku.cs.myapplication.models.UserChosenCourse;
+import hk.hku.cs.myapplication.models.UserFavoriteCourse;
 import hk.hku.cs.myapplication.models.UserInfoResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -63,4 +65,12 @@ public interface ApiService {
     @DELETE("/api/v1/main/user/favorite/{course_id}")
     Call<ApiResponse<Void>> removeCourseFromFavorites(@Path("course_id") int courseId);
 
+    @GET("/api/v1/main/sys/all_user_course")
+    Call<ApiResponse<List<UserChosenCourse>>> getAllUserCourses();
+
+    @GET("/api/v1/main/sys/all_user_favorite_course")
+    Call<ApiResponse<List<UserFavoriteCourse>>> getAllFavoriteCourses();
+
+    @GET("/api/v1/main/course/{course_id}")
+    Call<ApiResponse<Course>> getCourseDetails(@Path("course_id") int courseId);
 }
