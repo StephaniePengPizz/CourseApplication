@@ -5,13 +5,24 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pool Courses"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="16dp"/>
+
     <!-- 课程表列表 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/addCourseButton"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="120dp"
         android:layout_marginBottom="16dp" />
 
     <!-- 添加课程按钮 -->
