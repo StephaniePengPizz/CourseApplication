@@ -42,9 +42,6 @@
             android:name=".activities.match.MatchActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.match.MatchResultActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.user.ProfileActivity"
             android:exported="false" />
         <activity

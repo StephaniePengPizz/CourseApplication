@@ -1,11 +1,14 @@
 package hk.hku.cs.myapplication.activities.match;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -42,6 +45,8 @@ public class MatchActivity extends AppCompatActivity {
     private List<UserChosenCourse> allUserCourses = new ArrayList<>();
     private List<UserFavoriteCourse> allFavoriteCourses = new ArrayList<>();
     private Map<Integer, User> userMap = new HashMap<>();
+    private Button matchButton;
+    private CardView emptyStateCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,12 @@ public class MatchActivity extends AppCompatActivity {
         matchAdapter = new MatchAdapter(matchedUsers);
         recyclerView.setAdapter(matchAdapter);
 
-        Button matchButton = findViewById(R.id.matchButton);
+        matchButton = findViewById(R.id.matchButton);
+        emptyStateCard = findViewById(R.id.emptyStateCard);
+
+        emptyStateCard.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+
         matchButton.setOnClickListener(v -> loadDataAndMatch());
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -193,7 +203,10 @@ public class MatchActivity extends AppCompatActivity {
                         matchedUsers.clear();
                         for (User user : userMap.values()) {
                             if (user != null && user.getId() != currentUserId) {
-                                matchedUsers.add(user);
+                                int score = currentUser.calculateMatchScore(user);
+                                if (score > 0) {
+                                    matchedUsers.add(user);
+                                }
                             }
                         }
 
@@ -204,6 +217,13 @@ public class MatchActivity extends AppCompatActivity {
                         });
 
                         matchAdapter.updateUsers(matchedUsers, currentUser);
+                        if (matchedUsers.isEmpty()) {
+                            emptyStateCard.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                        } else {
+                            emptyStateCard.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
             }

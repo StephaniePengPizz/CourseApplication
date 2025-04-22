@@ -5,14 +5,75 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Find Study Partners"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/subtitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Match with students who share similar courses"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_below="@id/titleText"
+        android:layout_marginBottom="16dp"/>
+
     <!-- Match button -->
     <Button
         android:id="@+id/matchButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Match"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="80dp" />
+        android:text="Find Matches"
+        android:layout_below="@id/subtitleText"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="32dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:elevation="4dp"
+        android:paddingVertical="12dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/emptyStateCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/matchButton"
+        android:layout_margin="16dp"
+        android:visibility="visible"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No matches yet"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click the button above to find study partners"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <!-- RecyclerView for matched users -->
     <androidx.recyclerview.widget.RecyclerView

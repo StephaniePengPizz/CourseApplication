@@ -8,4 +8,9 @@
     <color name="purple_800">#6A1B9A</color> <!-- 深紫色 -->
     <color name="white">#FFFFFF</color> <!-- 白色 -->
     <color name="blue">#2196F3</color>  <!-- 蓝色 -->
+    <color name="primaryTextColor">#212121</color>
+    <color name="secondaryTextColor">#757575</color>
+    <color name="emptyStateIcon">#6200EE</color> <!-- Purple 500 -->
+    <color name="emptyStateBackground">#F5F5F5</color> <!-- Light gray -->
+    <color name="connectionColor">#03DAC6</color> <!-- Teal 200 -->
 </resources>

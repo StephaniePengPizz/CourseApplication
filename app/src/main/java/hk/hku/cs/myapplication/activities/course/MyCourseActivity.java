@@ -30,7 +30,6 @@ import retrofit2.Response;
 public class MyCourseActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private Button switchButton;
     private MyCourseAdapter courseAdapter;
     private List<Course> courseList = new ArrayList<>();
     private BottomNavigationView bottomNavigationView;
@@ -42,7 +41,6 @@ public class MyCourseActivity extends AppCompatActivity {
 
         // 初始化 RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
-        switchButton = findViewById(R.id.switchButton);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // 设置适配器
@@ -51,12 +49,6 @@ public class MyCourseActivity extends AppCompatActivity {
         recyclerView.setAdapter(courseAdapter);
 
         loadMyCoursesFromBackend();
-
-        // 切换按钮点击事件
-        switchButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MyCourseActivity.this, TableActivity.class);
-            startActivity(intent);
-        });
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));

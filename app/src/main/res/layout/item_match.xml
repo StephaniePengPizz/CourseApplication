@@ -4,44 +4,74 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <!-- Left side - Course information -->
     <LinearLayout
-        android:id="@+id/course_info_container"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
         android:layout_toLeftOf="@+id/contactButton"
-        android:orientation="vertical">
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="Name"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/matchScoreTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Match Score: 0"/>
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorPrimaryDark"/>
 
-        <TextView
-            android:id="@+id/commonCoursesTextView"
-            android:layout_width="wrap_content"
+        <!-- Improved common courses display -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Common Courses: None"/>
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/commonEnrolledLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Commonly Enrolled:"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/commonEnrolledCourses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:maxLines="3"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/commonFavoritesLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Common Favorites:"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/commonFavoritesCourses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:maxLines="3"
+                android:ellipsize="end"/>
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- Right side - Contact button -->
     <Button
         android:id="@+id/contactButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
         android:text="Contact"/>
 </RelativeLayout>

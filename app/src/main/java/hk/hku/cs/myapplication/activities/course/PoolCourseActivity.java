@@ -151,7 +151,7 @@ public class PoolCourseActivity extends AppCompatActivity implements CourseAdapt
 
 
     private void loadPoolCoursesFromBackend() {
-        Call<CourseListResponse> call = RetrofitClient.getInstance().getCourses(null, null, null, 1, 20);
+        Call<CourseListResponse> call = RetrofitClient.getInstance().getCourses(null, null, null, 1, 30);
         call.enqueue(new Callback<CourseListResponse>() {
             @Override
             public void onResponse(Call<CourseListResponse> call, Response<CourseListResponse> response) {

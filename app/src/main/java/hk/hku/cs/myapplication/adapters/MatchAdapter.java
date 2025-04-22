@@ -51,26 +51,36 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
         holder.nameTextView.setText(matchedUser.getNameinMatch());
         holder.matchScoreTextView.setText("Match Score: " + matchScore);
 
-        StringBuilder courseInfo = new StringBuilder();
-
-        // 共同选修课（权重5分）
-        buildCommonCoursesString(courseInfo,
+        List<String> commonEnrolled = getCommonCourses(
                 currentUser.getEnrolledCourses(),
-                matchedUser.getEnrolledCourses(),
-                true);
+                matchedUser.getEnrolledCourses()
+        );
 
-        courseInfo.append("\n");
+        if (!commonEnrolled.isEmpty()) {
+            holder.commonEnrolledLabel.setVisibility(View.VISIBLE);
+            holder.commonEnrolledCourses.setText(formatCourseList(commonEnrolled));
+        } else {
+            holder.commonEnrolledLabel.setVisibility(View.GONE);
+            holder.commonEnrolledCourses.setText("");
+        }
 
-        // 共同收藏课（权重3分）
-        buildCommonCoursesString(courseInfo,
+        // Handle favorite courses
+        List<String> commonFavorites = getCommonCourses(
                 currentUser.getFavoriteCourses(),
-                matchedUser.getFavoriteCourses(),
-                false);
+                matchedUser.getFavoriteCourses()
+        );
 
-        holder.commonCoursesTextView.setText(courseInfo.toString());
+        if (!commonFavorites.isEmpty()) {
+            holder.commonFavoritesLabel.setVisibility(View.VISIBLE);
+            holder.commonFavoritesCourses.setText(formatCourseList(commonFavorites));
+        } else {
+            holder.commonFavoritesLabel.setVisibility(View.GONE);
+            holder.commonFavoritesCourses.setText("");
+        }
+
 
         holder.contactButton.setOnClickListener(v -> {
-            if (matchedUser.getEmail() != null && !matchedUser.getEmail().isEmpty()) {
+            if (matchedUser.getEmail() != null) {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
                 emailIntent.setData(Uri.parse("mailto:" + matchedUser.getEmail()));
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Hello " + matchedUser.getName());
@@ -87,36 +97,34 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
             }
         });
     }
-    private void buildCommonCoursesString(StringBuilder builder,
-                                          List<Course> currentUserCourses,
-                                          List<Course> matchedUserCourses,
-                                          boolean isEnrolled) {
-        if (currentUserCourses == null || matchedUserCourses == null) {
-            builder.append("None");
-            return;
-        }
-        List<String> commonCourseNames = new ArrayList<>();
+    private List<String> getCommonCourses(List<Course> user1Courses, List<Course> user2Courses) {
+        List<String> common = new ArrayList<>();
+        if (user1Courses == null || user2Courses == null) return common;
 
-        for (Course course : currentUserCourses) {
-            if (course != null && matchedUserCourses.contains(course)) {
+        for (Course course : user1Courses) {
+            if (course != null && user2Courses.contains(course)) {
                 String name = course.getCourseName();
                 if (name != null && !name.isEmpty()) {
-                    commonCourseNames.add(name);
+                    common.add(name);
                 }
             }
         }
-        builder.append(isEnrolled ? "Enrolled: " : "Favorites: ");
-        if (commonCourseNames.isEmpty()) {
-            builder.append("None");
-        } else {
-            builder.append("(").append(commonCourseNames.size()).append(") ");
-            builder.append(TextUtils.join(", ", commonCourseNames));
+        return common;
+    }
 
-            int points = isEnrolled ? commonCourseNames.size() * 5
-                    : commonCourseNames.size() * 3;
-            builder.append(" [").append(points).append(" pts]");
+    private String formatCourseList(List<String> courses) {
+        if (courses.isEmpty()) return "";
+
+        // Create bullet points for each course
+        StringBuilder sb = new StringBuilder();
+        for (String course : courses) {
+            sb.append("• ").append(course).append("\n");
         }
-
+        // Remove last newline
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 1);
+        }
+        return sb.toString();
     }
 
     @Override
@@ -127,14 +135,20 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
     static class MatchViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView;
         TextView matchScoreTextView;
-        TextView commonCoursesTextView;
+        TextView commonEnrolledLabel;
+        TextView commonEnrolledCourses;
+        TextView commonFavoritesLabel;
+        TextView commonFavoritesCourses;
         Button contactButton;
 
         public MatchViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             matchScoreTextView = itemView.findViewById(R.id.matchScoreTextView);
-            commonCoursesTextView = itemView.findViewById(R.id.commonCoursesTextView);
+            commonEnrolledLabel = itemView.findViewById(R.id.commonEnrolledLabel);
+            commonEnrolledCourses = itemView.findViewById(R.id.commonEnrolledCourses);
+            commonFavoritesLabel = itemView.findViewById(R.id.commonFavoritesLabel);
+            commonFavoritesCourses = itemView.findViewById(R.id.commonFavoritesCourses);
             contactButton = itemView.findViewById(R.id.contactButton);
         }
     }
