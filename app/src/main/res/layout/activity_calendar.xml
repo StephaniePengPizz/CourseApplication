@@ -1,65 +1,91 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="12dp"
+    android:background="#F9F9F9">
 
-    <LinearLayout
-        android:id="@+id/controlsLayout"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/controlsCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="16dp"
-        android:layout_marginTop="70dp"
-        android:layout_alignParentTop="true">
+        android:layout_marginTop="80dp"
+        android:layout_alignParentTop="true"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="16dp">
 
-        <!-- 前一个月按钮 -->
-        <Button
-            android:id="@+id/prevButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:text="&lt;&lt;"
-            android:layout_marginEnd="8dp"/>
-
-        <TextView
-            android:id="@+id/monthLabel"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/controlsLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black" />
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/nextButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:text="&gt;&gt;"
-            android:layout_marginStart="8dp"/>
+            <!-- 上一月按钮 -->
+            <Button
+                android:id="@+id/prevButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="←"
+                android:backgroundTint="#EDE7F6"
+                android:textColor="#6A1B9A"
+                android:background="@drawable/rounded_button"/>
 
-        <Button
-            android:id="@+id/addScheduleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:text="添加日程"
-            android:layout_alignParentEnd="true"/>
-    </LinearLayout>
+            <!-- 月份文本 -->
+            <TextView
+                android:id="@+id/monthLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#4A148C" />
 
-    <!-- 日历网格 -->
-    <androidx.gridlayout.widget.GridLayout
-        android:id="@+id/calendarGrid"
+            <!-- 下一月按钮 -->
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="→"
+                android:backgroundTint="#EDE7F6"
+                android:textColor="#6A1B9A"
+                android:background="@drawable/rounded_button"/>
+
+            <!-- 添加日程按钮 -->
+            <Button
+                android:id="@+id/addScheduleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="添加日程"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#7B1FA2"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/rounded_button_solid"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- 日历网格，留白分层 -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
         android:layout_above="@id/bottom_navigation"
-        android:layout_below="@id/controlsLayout"
-        app:columnCount="7"
-        app:rowCount="7"/>
+        android:layout_below="@id/controlsCard"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp">
+
+        <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/calendarGrid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:background="#FFFFFF"
+            app:columnCount="7"
+            app:rowCount="7"/>
+    </androidx.cardview.widget.CardView>
 
     <!-- 底部导航栏 -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
