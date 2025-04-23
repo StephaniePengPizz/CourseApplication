@@ -15,7 +15,7 @@
         android:usesCleartextTraffic="true">
         <!-- LoginActivity是默认启动项 -->
         <activity
-            android:name=".activities.auth.LoginActivity"
+            android:name=".activities.course.PoolCourseActivity"
             android:exported="true">
         </activity>
 
@@ -28,7 +28,7 @@
             android:exported="false" />
         <!-- PoolCourseActivity 设置为默认启动项 -->
         <activity
-            android:name=".activities.course.PoolCourseActivity"
+            android:name=".activities.auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
