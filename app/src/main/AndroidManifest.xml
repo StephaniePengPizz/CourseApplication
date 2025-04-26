@@ -13,20 +13,6 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.MyTimetable"
         android:usesCleartextTraffic="true">
-        <!-- LoginActivity是默认启动项 -->
-        <activity
-            android:name=".activities.course.PoolCourseActivity"
-            android:exported="true">
-        </activity>
-
-        <!-- 其他 Activity -->
-        <activity
-            android:name=".activities.auth.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.course.MyCourseActivity"
-            android:exported="false" />
-        <!-- PoolCourseActivity 设置为默认启动项 -->
         <activity
             android:name=".activities.auth.LoginActivity"
             android:exported="true">
@@ -35,6 +21,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.course.PoolCourseActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".activities.auth.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.course.MyCourseActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.course.TableActivity"
             android:exported="false" />

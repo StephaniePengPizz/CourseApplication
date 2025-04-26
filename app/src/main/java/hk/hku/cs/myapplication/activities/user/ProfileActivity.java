@@ -28,17 +28,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import hk.hku.cs.myapplication.models.Course;
+import hk.hku.cs.myapplication.models.course.Course;
 
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.activities.auth.LoginActivity;
-import hk.hku.cs.myapplication.models.UserInfoResponse;
+import hk.hku.cs.myapplication.models.user.UserInfoResponse;
 import hk.hku.cs.myapplication.network.RetrofitClient;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import hk.hku.cs.myapplication.models.CourseMyListResponse;
+import hk.hku.cs.myapplication.models.course.CourseMyListResponse;
 
 
 public class ProfileActivity extends AppCompatActivity {

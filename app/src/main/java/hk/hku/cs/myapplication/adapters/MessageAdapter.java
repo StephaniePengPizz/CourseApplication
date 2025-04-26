@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 import hk.hku.cs.myapplication.R;
-import hk.hku.cs.myapplication.models.Message;
+import hk.hku.cs.myapplication.models.forum.Message;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 

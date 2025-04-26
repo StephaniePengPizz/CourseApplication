@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.course;
 
 public class AddCourseRequest {
     private String course_code;

@@ -1,13 +1,13 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.course;
 
-public class UserFavoriteCourse {
+public class UserChosenCourse {
     private int id;
     private int course_id;
-    private String course_name;
     private int user_id;
+    private String course_name;
 
     // Constructor
-    public UserFavoriteCourse(int id, int course_id, int user_id) {
+    public UserChosenCourse(int id, int course_id, int user_id) {
         this.id = id;
         this.course_id = course_id;
         this.user_id = user_id;
@@ -29,11 +29,11 @@ public class UserFavoriteCourse {
     public void setCourseId(int course_id) {
         this.course_id = course_id;
     }
-
     public String getCourseName() {
         return course_name;
     }
-    public void setCourseName() {
+
+    public void setCourseName(String course_name) {
         this.course_name = course_name;
     }
 

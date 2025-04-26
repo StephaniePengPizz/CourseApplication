@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.course;
 
 import java.util.List;
 
@@ -10,7 +10,6 @@ public class CourseListResponse {
     public int getCode() {
         return code;
     }
-
     public Data getData() {
         return data;
     }

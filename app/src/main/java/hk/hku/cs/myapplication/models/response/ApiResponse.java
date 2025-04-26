@@ -1,12 +1,12 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.response;
 
 import java.util.List;
 
 public class ApiResponse<T> {
-    private int code;       // 响应状态码 (200表示成功)
-    private String message; // 响应消息
-    private T data;         // 响应数据 (泛型，可以是Course、Schedule等)
-    private List<T> courses; // 特定情况下可能有列表数据
+    private int code;
+    private String message;
+    private T data;
+    private List<T> courses;
 
     // 构造方法
     public ApiResponse() {}

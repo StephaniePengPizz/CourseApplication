@@ -1,10 +1,6 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.user;
 
 import androidx.annotation.NonNull;
-
-import java.util.List;
-
-import retrofit2.internal.EverythingIsNonNull;
 
 public class UserInfoResponse {
     private int code;

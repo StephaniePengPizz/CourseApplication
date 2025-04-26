@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import hk.hku.cs.myapplication.R;
-import hk.hku.cs.myapplication.models.Schedule;
+import hk.hku.cs.myapplication.models.calendar.CalendarSchedule;
 import hk.hku.cs.myapplication.utils.HolidayManager;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
 import android.content.SharedPreferences;
@@ -42,7 +42,7 @@ public class CalendarActivity extends AppCompatActivity {
     private LocalDate currentDate;
     private TextView monthLabel;
     private GridLayout calendarGrid;
-    private Map<LocalDate, List<Schedule>> schedules;
+    private Map<LocalDate, List<CalendarSchedule>> schedules;
     private BottomNavigationView bottomNavigationView;
     private static final String PREFS_NAME = "CalendarPreferences";
     private static final String SCHEDULES_KEY = "saved_schedules";
@@ -141,8 +141,8 @@ public class CalendarActivity extends AppCompatActivity {
 
             // 如果有日程，添加日程数量提示
             if (schedules.containsKey(date) && !Objects.requireNonNull(schedules.get(date)).isEmpty()) {
-                List<Schedule> dateSchedules = schedules.get(date);
-                Schedule.Priority highestPriority = getHighestPriority(dateSchedules);
+                List<CalendarSchedule> dateSchedules = schedules.get(date);
+                CalendarSchedule.Priority highestPriority = getHighestPriority(dateSchedules);
 
                 // 添加日程数量
                 buttonText.append("\n(").append(dateSchedules.size()).append(")");
@@ -221,9 +221,9 @@ public class CalendarActivity extends AppCompatActivity {
         calendarGrid.addView(button);
     }
 
-    private Schedule.Priority getHighestPriority(List<Schedule> dateSchedules) {
-        Schedule.Priority highest = Schedule.Priority.LOW;
-        for (Schedule schedule : dateSchedules) {
+    private CalendarSchedule.Priority getHighestPriority(List<CalendarSchedule> dateSchedules) {
+        CalendarSchedule.Priority highest = CalendarSchedule.Priority.LOW;
+        for (CalendarSchedule schedule : dateSchedules) {
             if (schedule.getPriority().ordinal() > highest.ordinal()) {
                 highest = schedule.getPriority();
             }
@@ -265,8 +265,8 @@ public class CalendarActivity extends AppCompatActivity {
         TimePicker timePicker = dialogView.findViewById(R.id.timePicker);
 
         // 设置优先级下拉框
-        ArrayAdapter<Schedule.Priority> priorityAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, Schedule.Priority.values());
+        ArrayAdapter<CalendarSchedule.Priority> priorityAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, CalendarSchedule.Priority.values());
         priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         prioritySpinner.setAdapter(priorityAdapter);
         prioritySpinner.setSelection(1); // 默认中优先级
@@ -291,11 +291,11 @@ public class CalendarActivity extends AppCompatActivity {
                         if (timeCheckBox.isChecked()) {
                             scheduleTime = LocalTime.of(timePicker.getHour(), timePicker.getMinute());
                         }
-                        Schedule newSchedule = new Schedule(
+                        CalendarSchedule newSchedule = new CalendarSchedule(
                                 scheduleDate,
                                 scheduleTime,
                                 schedule,
-                                (Schedule.Priority) prioritySpinner.getSelectedItem(),
+                                (CalendarSchedule.Priority) prioritySpinner.getSelectedItem(),
                                 categoryInput.getText().toString().trim()
                         );
                         schedules.computeIfAbsent(scheduleDate, k -> new ArrayList<>())
@@ -310,7 +310,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void showSchedules(LocalDate date) {
-        List<Schedule> dateSchedules = schedules.getOrDefault(date, new ArrayList<>());
+        List<CalendarSchedule> dateSchedules = schedules.getOrDefault(date, new ArrayList<>());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         if (dateSchedules.isEmpty()) {
@@ -327,7 +327,7 @@ public class CalendarActivity extends AppCompatActivity {
         scheduleList.setPadding(32, 16, 32, 16);
 
         for (int i = 0; i < dateSchedules.size(); i++) {
-            Schedule schedule = dateSchedules.get(i);
+            CalendarSchedule schedule = dateSchedules.get(i);
             TextView scheduleView = new TextView(this);
             scheduleView.setPadding(0, 8, 0, 8);
 
@@ -356,7 +356,7 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void showDeleteScheduleDialog(LocalDate date, List<Schedule> dateSchedules) {
+    private void showDeleteScheduleDialog(LocalDate date, List<CalendarSchedule> dateSchedules) {
         String[] items = new String[dateSchedules.size()];
         for (int i = 0; i < dateSchedules.size(); i++) {
             items[i] = dateSchedules.get(i).toString();
@@ -383,10 +383,10 @@ public class CalendarActivity extends AppCompatActivity {
         StringWriter stringWriter = new StringWriter();
         try (JsonWriter writer = new JsonWriter(stringWriter)) {
             writer.beginObject();
-            for (Map.Entry<LocalDate, List<Schedule>> entry : schedules.entrySet()) {
+            for (Map.Entry<LocalDate, List<CalendarSchedule>> entry : schedules.entrySet()) {
                 writer.name(entry.getKey().toString());
                 writer.beginArray();
-                for (Schedule schedule : entry.getValue()) {
+                for (CalendarSchedule schedule : entry.getValue()) {
                     writer.value(schedule.toJson());
                 }
                 writer.endArray();
@@ -411,9 +411,9 @@ public class CalendarActivity extends AppCompatActivity {
                     String dateStr = reader.nextName();
                     LocalDate date = LocalDate.parse(dateStr);
                     reader.beginArray();
-                    List<Schedule> scheduleList = new ArrayList<>();
+                    List<CalendarSchedule> scheduleList = new ArrayList<>();
                     while (reader.hasNext()) {
-                        Schedule schedule = Schedule.fromJson(reader.nextString());
+                        CalendarSchedule schedule = CalendarSchedule.fromJson(reader.nextString());
                         if (schedule != null) {
                             scheduleList.add(schedule);
                         }

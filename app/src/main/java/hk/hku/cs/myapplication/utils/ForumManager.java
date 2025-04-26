@@ -1,8 +1,10 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.utils;
 
 import java.util.HashMap;
 import java.util.Map;
-import hk.hku.cs.myapplication.models.*;
+
+import hk.hku.cs.myapplication.models.forum.Forum;
+import hk.hku.cs.myapplication.models.forum.Message;
 
 public class ForumManager {
     private static Map<String, Forum> forumMap = new HashMap<>();

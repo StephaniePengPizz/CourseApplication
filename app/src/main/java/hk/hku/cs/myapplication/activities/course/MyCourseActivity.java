@@ -1,9 +1,7 @@
 package hk.hku.cs.myapplication.activities.course;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,9 +16,9 @@ import java.util.List;
 
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.adapters.MyCourseAdapter;
-import hk.hku.cs.myapplication.models.ApiResponse;
-import hk.hku.cs.myapplication.models.Course;
-import hk.hku.cs.myapplication.models.CourseMyListResponse;
+import hk.hku.cs.myapplication.models.response.ApiResponse;
+import hk.hku.cs.myapplication.models.course.Course;
+import hk.hku.cs.myapplication.models.course.CourseMyListResponse;
 import hk.hku.cs.myapplication.network.RetrofitClient;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
 import retrofit2.Call;

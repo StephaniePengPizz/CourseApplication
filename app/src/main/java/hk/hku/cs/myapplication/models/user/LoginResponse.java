@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.user;
 
 public class LoginResponse {
     private int code;

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import hk.hku.cs.myapplication.R;
-import hk.hku.cs.myapplication.models.User;
+import hk.hku.cs.myapplication.models.user.User;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     private List<User> userList;

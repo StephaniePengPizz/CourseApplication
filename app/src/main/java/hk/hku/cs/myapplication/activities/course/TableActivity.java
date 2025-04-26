@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import hk.hku.cs.myapplication.models.Course;
+import hk.hku.cs.myapplication.models.course.Course;
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
 

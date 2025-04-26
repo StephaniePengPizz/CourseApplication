@@ -2,7 +2,6 @@ package hk.hku.cs.myapplication.adapters;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hk.hku.cs.myapplication.R;
-import hk.hku.cs.myapplication.models.Course;
-import hk.hku.cs.myapplication.models.User;
+import hk.hku.cs.myapplication.models.course.Course;
+import hk.hku.cs.myapplication.models.user.User;
 
 public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHolder> {
 

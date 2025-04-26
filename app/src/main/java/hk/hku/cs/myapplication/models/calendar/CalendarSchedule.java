@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.calendar;
 
 import android.os.Build;
 import android.util.JsonReader;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.io.Serializable;
 
-public class Schedule implements Serializable {
+public class CalendarSchedule implements Serializable {
     private LocalDate date;
     private LocalTime time;
     private String content;
@@ -36,12 +36,9 @@ public class Schedule implements Serializable {
             return displayName;
         }
 
-        // Add this method to get enum name
         public String getName() {
             return name();
         }
-
-        // Add this method to get Priority from display name
         public static Priority fromDisplayName(String displayName) {
             for (Priority p : values()) {
                 if (p.displayName.equals(displayName)) {
@@ -72,7 +69,7 @@ public class Schedule implements Serializable {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static Schedule fromJson(String jsonStr) {
+    public static CalendarSchedule fromJson(String jsonStr) {
         try (JsonReader reader = new JsonReader(new StringReader(jsonStr))) {
             LocalDate date = null;
             String content = "";
@@ -93,9 +90,8 @@ public class Schedule implements Serializable {
                     case "priority":
                         String priorityStr = reader.nextString();
                         try {
-                            priority = Priority.valueOf(priorityStr); // Use enum name
+                            priority = Priority.valueOf(priorityStr);
                         } catch (IllegalArgumentException e) {
-                            // If it fails, try to parse as display name
                             priority = Priority.fromDisplayName(priorityStr);
                         }
                         break;
@@ -116,7 +112,7 @@ public class Schedule implements Serializable {
             reader.endObject();
 
             if (date != null) {
-                return new Schedule(date, time, content, priority, category);
+                return new CalendarSchedule(date, time, content, priority, category);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -124,11 +120,11 @@ public class Schedule implements Serializable {
         return null;
     }
 
-    public Schedule(LocalDate date, String content) {
+    public CalendarSchedule(LocalDate date, String content) {
         this(date, null, content, Priority.MEDIUM, "");
     }
 
-    public Schedule(LocalDate date, LocalTime time, String content, Priority priority, String category) {
+    public CalendarSchedule(LocalDate date, LocalTime time, String content, Priority priority, String category) {
         this.date = date;
         this.time = time;
         this.content = content;

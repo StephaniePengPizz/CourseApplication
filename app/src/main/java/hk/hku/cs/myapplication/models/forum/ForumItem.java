@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.forum;
 
 public class ForumItem {
     private int id;

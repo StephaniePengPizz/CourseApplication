@@ -1,4 +1,6 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.course;
+
+import android.util.Log;
 
 // ScheduleRequest.java
 public class AddScheduleRequest {
@@ -15,8 +17,8 @@ public class AddScheduleRequest {
         this.course_id = courseId;
         this.schedule_date = date;
         this.day_of_week = day;
-        this.start_time = startTime;
-        this.end_time = endTime;
+        this.start_time = formatTimeForApi(startTime);
+        this.end_time = formatTimeForApi(endTime);
         this.location = location;
     }
 
@@ -27,4 +29,20 @@ public class AddScheduleRequest {
     public String getStartTime() { return start_time; }
     public String getEndTime() { return end_time; }
     public String getLocation() { return location; }
+    private String formatTimeForApi(String inputTime) {
+        try {
+            if (inputTime.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
+                return inputTime + ":00.000Z";  // 转为 "09:00:00.000z"
+            }
+
+            if (inputTime.startsWith("T") && inputTime.length() == 9) {
+                return inputTime.substring(1) + ".000z";  // "T09:00:00" → "09:00:00.000z"
+            }
+
+            throw new IllegalArgumentException("无法识别的时间格式: " + inputTime);
+        } catch (Exception e) {
+            Log.e("TimeFormat", "格式化失败: " + e.getMessage());
+            return "00:00:00.000z";
+        }
+    }
 }

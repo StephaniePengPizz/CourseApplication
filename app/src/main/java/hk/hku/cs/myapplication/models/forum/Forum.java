@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.forum;
 
 import java.util.ArrayList;
 import java.util.List;

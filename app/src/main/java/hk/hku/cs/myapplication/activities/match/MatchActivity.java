@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,12 +22,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.adapters.MatchAdapter;
-import hk.hku.cs.myapplication.models.ApiResponse;
-import hk.hku.cs.myapplication.models.Course;
-import hk.hku.cs.myapplication.models.User;
-import hk.hku.cs.myapplication.models.UserChosenCourse;
-import hk.hku.cs.myapplication.models.UserFavoriteCourse;
-import hk.hku.cs.myapplication.models.UserInfoResponse;
+import hk.hku.cs.myapplication.models.response.ApiResponse;
+import hk.hku.cs.myapplication.models.course.Course;
+import hk.hku.cs.myapplication.models.user.User;
+import hk.hku.cs.myapplication.models.course.UserChosenCourse;
+import hk.hku.cs.myapplication.models.course.UserFavoriteCourse;
+import hk.hku.cs.myapplication.models.user.UserInfoResponse;
 import hk.hku.cs.myapplication.network.RetrofitClient;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
 import retrofit2.Call;

@@ -11,12 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.activities.forum.ForumActivity;
-import hk.hku.cs.myapplication.models.Course;
+import hk.hku.cs.myapplication.models.course.Course;
 
 public class MyCourseAdapter extends RecyclerView.Adapter<MyCourseAdapter.ViewHolder> {
 

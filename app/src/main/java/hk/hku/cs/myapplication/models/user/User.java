@@ -1,8 +1,10 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.user;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import hk.hku.cs.myapplication.models.course.Course;
 
 public class User implements Serializable {
     private String name;

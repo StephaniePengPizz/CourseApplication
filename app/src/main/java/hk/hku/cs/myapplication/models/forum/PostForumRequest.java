@@ -1,4 +1,4 @@
-package hk.hku.cs.myapplication.models;
+package hk.hku.cs.myapplication.models.forum;
 
 public class PostForumRequest {
     private int course_id;

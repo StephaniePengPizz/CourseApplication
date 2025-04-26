@@ -2,11 +2,9 @@ package hk.hku.cs.myapplication.activities.auth;
 
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,9 +17,9 @@ import com.google.gson.Gson;
 
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.activities.course.PoolCourseActivity;
-import hk.hku.cs.myapplication.models.LoginRequest;
-import hk.hku.cs.myapplication.models.LoginResponse;
-import hk.hku.cs.myapplication.models.User;
+import hk.hku.cs.myapplication.models.user.LoginRequest;
+import hk.hku.cs.myapplication.models.user.LoginResponse;
+import hk.hku.cs.myapplication.models.user.User;
 import hk.hku.cs.myapplication.network.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
