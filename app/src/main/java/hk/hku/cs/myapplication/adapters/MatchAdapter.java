@@ -1,7 +1,12 @@
 package hk.hku.cs.myapplication.adapters;
 
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +84,38 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
 
 
         holder.contactButton.setOnClickListener(v -> {
+            String fakeEmail = "user" + matchedUser.getId() + "@hku.hk";
+            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+            builder.setTitle("Contact")
+                    .setMessage("Would you like to contact this student?\n\n" +
+                            "Email: " + fakeEmail + "\n" +
+                            "Shared Courses: " + commonEnrolled.size() + "\n" +
+                            "Match Score: " + matchScore)
+                    .setPositiveButton("Send Email", (dialog, which) -> {
+                        // Fake email sending simulation
+                        Toast.makeText(v.getContext(),
+                                "Preparing email to " + fakeEmail,
+                                Toast.LENGTH_SHORT).show();
+
+                        // Simulate email client opening after delay
+                        new Handler().postDelayed(() -> {
+                            Toast.makeText(v.getContext(),
+                                    "Email client would open here (Simulation)",
+                                    Toast.LENGTH_SHORT).show();
+                        }, 1000);
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .setNeutralButton("Copy Email", (dialog, which) -> {
+                        ClipboardManager clipboard = (ClipboardManager)
+                                v.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("Email", fakeEmail);
+                        clipboard.setPrimaryClip(clip);
+                        Toast.makeText(v.getContext(),
+                                "Email copied to clipboard",
+                                Toast.LENGTH_SHORT).show();
+                    })
+                    .show();
+            /*
             if (matchedUser.getEmail() != null) {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
                 emailIntent.setData(Uri.parse("mailto:" + matchedUser.getEmail()));
@@ -94,6 +131,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
             } else {
                 Toast.makeText(holder.itemView.getContext(), "Email not available", Toast.LENGTH_SHORT).show();
             }
+            */
         });
     }
     private List<String> getCommonCourses(List<Course> user1Courses, List<Course> user2Courses) {

@@ -59,7 +59,7 @@
                 android:id="@+id/addScheduleButton"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="添加日程"
+                android:text="Add My Schedule"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#7B1FA2"
                 android:layout_marginStart="12dp"
