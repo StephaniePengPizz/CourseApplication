@@ -8,11 +8,11 @@
 
     <item
         android:id="@+id/navigation_my_course"
-        android:icon="@drawable/ic_course"
+        android:icon="@drawable/ic_star"
         android:title="My Courses" />
     <item
         android:id="@+id/navigation_calendar"
-        android:icon="@drawable/ic_course"
+        android:icon="@drawable/ic_message"
         android:title="Calendar" />
     <!-- 匹配 -->
     <item

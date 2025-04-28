@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/courseNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/courseCodeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/semesterText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/teachersTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Teachers:"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/teachersText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/schedulesTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Schedules:"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/schedulesText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Spinner for Day of Week -->
+    <Spinner
+        android:id="@+id/daySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/startTimeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Start Time (e.g., 10:00 AM)"
+        android:inputType="time"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/endTimeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter End Time (e.g., 11:00 AM)"
+        android:inputType="time"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/courseLocationEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Course Location"
+        android:inputType="text"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Save Button to Save Schedule -->
+    <Button
+        android:id="@+id/saveScheduleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Schedule"
+        android:layout_marginTop="8dp" />
+</LinearLayout>

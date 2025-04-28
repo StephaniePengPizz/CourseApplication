@@ -1,5 +1,6 @@
 package hk.hku.cs.myapplication.activities.forum;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,36 +16,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hk.hku.cs.myapplication.R;
-import hk.hku.cs.myapplication.models.ApiResponse;
-import hk.hku.cs.myapplication.models.ForumItem;
-import hk.hku.cs.myapplication.models.Message;
-import hk.hku.cs.myapplication.models.Forum;
-import hk.hku.cs.myapplication.models.ForumManager;
-import hk.hku.cs.myapplication.adapters.MessageAdapter;
-import hk.hku.cs.myapplication.models.PostForumRequest;
+import hk.hku.cs.myapplication.adapters.ForumAdapter;
+import hk.hku.cs.myapplication.models.forum.ForumItem;
+import hk.hku.cs.myapplication.models.forum.PostForumRequest;
+import hk.hku.cs.myapplication.models.response.ApiResponse;
 import hk.hku.cs.myapplication.network.ApiService;
 import hk.hku.cs.myapplication.network.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 public class ForumActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EditText inputEditText;
-    private Button sendButton;
-    private Button backButton;
-
-    private MessageAdapter messageAdapter;
-    private List<Message> messages = new ArrayList<>();
+    private Button sendButton, backButton;
+    private ForumAdapter forumAdapter;
+    private List<ForumItem> forumItems = new ArrayList<>();
     private int courseId;
-
     private ApiService apiService;
 
     @Override
@@ -54,22 +43,19 @@ public class ForumActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         courseId = getIntent().getIntExtra("courseId", 0);
-        setTitle("Forum - Course ID: " + courseId);
-        Log.d("ForumActivity", "进入论坛页面, courseId = " + courseId);
 
         recyclerView = findViewById(R.id.recyclerView);
         inputEditText = findViewById(R.id.inputEditText);
         sendButton = findViewById(R.id.sendButton);
         backButton = findViewById(R.id.backButton);
 
-        messageAdapter = new MessageAdapter(messages);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(messageAdapter);
-
         apiService = RetrofitClient.getRetrofit().create(ApiService.class);
 
+        forumAdapter = new ForumAdapter(forumItems, this::onItemClick, this::onDeleteClick);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(forumAdapter);
 
-        loadMessages();
+        loadForums();
 
         sendButton.setOnClickListener(v -> {
             String content = inputEditText.getText().toString().trim();
@@ -79,17 +65,15 @@ public class ForumActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
-                            messages.add(new Message("你", content, System.currentTimeMillis()));
-                            messageAdapter.notifyDataSetChanged();
                             inputEditText.setText("");
+                            loadForums();
                         } else {
-                            Toast.makeText(ForumActivity.this, "发送失败: " + response.code(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForumActivity.this, "发帖失败", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-                        Log.e("ForumActivity", "发送失败", t);
                         Toast.makeText(ForumActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -99,18 +83,14 @@ public class ForumActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
     }
 
-    private void loadMessages() {
+    private void loadForums() {
         apiService.getForumMessages(courseId).enqueue(new Callback<ApiResponse<List<ForumItem>>>() {
             @Override
             public void onResponse(Call<ApiResponse<List<ForumItem>>> call, Response<ApiResponse<List<ForumItem>>> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().getCode() == 200) {
-                    List<ForumItem> forumItems = response.body().getData();
-                    messages.clear();
-                    for (ForumItem item : forumItems) {
-                        String sender = item.getCreator() != null ? item.getCreator().getUsername() : "Unknown";
-                        messages.add(new Message(sender, item.getContent(), System.currentTimeMillis()));
-                    }
-                    messageAdapter.notifyDataSetChanged();
+                    forumItems.clear();
+                    forumItems.addAll(response.body().getData());
+                    forumAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(ForumActivity.this, "加载失败", Toast.LENGTH_SHORT).show();
                 }
@@ -118,10 +98,33 @@ public class ForumActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ApiResponse<List<ForumItem>>> call, Throwable t) {
-                Log.e("ForumActivity", "加载失败", t);
                 Toast.makeText(ForumActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    private void onItemClick(ForumItem item) {
+        Intent intent = new Intent(this, ForumDetailActivity.class);
+        intent.putExtra("forumId", item.getId());
+        startActivity(intent);
+    }
+
+    private void onDeleteClick(ForumItem item) {
+        apiService.deleteForum(item.getId()).enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(ForumActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                    loadForums();
+                } else {
+                    Toast.makeText(ForumActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
+                Toast.makeText(ForumActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

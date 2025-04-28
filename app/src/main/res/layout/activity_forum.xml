@@ -1,48 +1,66 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="返回"
-        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/forumTitle"
-        android:layout_width="match_parent"
+        android:layout_width="379dp"
         android:layout_height="wrap_content"
-        android:text="Course Forum"
-        android:textSize="20sp"
-        android:textStyle="bold"
         android:gravity="center"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="12dp"
+        android:text="Course Forum"
+        android:textColor="#7B1FA2"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginBottom="8dp"
+        android:background="?android:selectableItemBackground"
+        android:backgroundTint="#E1BEE7"
+        android:elevation="2dp"
+        android:minWidth="64dp"
+        android:paddingHorizontal="12dp"
+        android:text="Back" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:gravity="center_vertical"
+        android:baselineAligned="false">
 
         <EditText
             android:id="@+id/inputEditText"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Enter message" />
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:hint="Enter message"
+            android:textColorHint="#BA68C8"
+            android:background="@android:drawable/editbox_background"
+            android:paddingHorizontal="12dp"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/sendButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send" />
+            android:layout_height="48dp"
+            android:text="Send"
+            android:layout_marginStart="8dp"
+            android:minWidth="72dp" />
     </LinearLayout>
 </LinearLayout>

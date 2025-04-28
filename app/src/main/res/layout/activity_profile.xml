@@ -10,8 +10,7 @@
         android:id="@+id/profileCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="60dp"
         android:backgroundTint="@android:color/white"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
@@ -153,16 +152,21 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_below="@id/profileCard"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginTop="8dp"/>
 
-    <!-- RecyclerView 展示近期活动 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/profileCourseRecyclerView"
+    <!-- 表格布局 -->
+    <ScrollView
+        android:id="@+id/tableScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_below="@id/courseScheduleTextView"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginTop="8dp" >
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
 
     <!-- Edit Profile 按钮 -->
     <Button
@@ -170,8 +174,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Edit Profile"
-        android:layout_below="@id/profileCourseRecyclerView"
-        android:layout_marginBottom="16dp" />
+        android:layout_below="@id/tableScrollView"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
 
     <!-- Logout 按钮 -->
     <Button
@@ -179,7 +184,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Logout"
+        android:layout_marginBottom="8dp"
         android:layout_below="@id/editProfileButton" />
+
 
     <!-- 底部导航栏 -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

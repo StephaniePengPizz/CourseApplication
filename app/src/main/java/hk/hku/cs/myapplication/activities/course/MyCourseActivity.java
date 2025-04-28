@@ -1,9 +1,7 @@
 package hk.hku.cs.myapplication.activities.course;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,9 +16,9 @@ import java.util.List;
 
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.adapters.MyCourseAdapter;
-import hk.hku.cs.myapplication.models.ApiResponse;
-import hk.hku.cs.myapplication.models.Course;
-import hk.hku.cs.myapplication.models.CourseMyListResponse;
+import hk.hku.cs.myapplication.models.response.ApiResponse;
+import hk.hku.cs.myapplication.models.course.Course;
+import hk.hku.cs.myapplication.models.course.CourseMyListResponse;
 import hk.hku.cs.myapplication.network.RetrofitClient;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
 import retrofit2.Call;
@@ -30,7 +28,6 @@ import retrofit2.Response;
 public class MyCourseActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private Button switchButton;
     private MyCourseAdapter courseAdapter;
     private List<Course> courseList = new ArrayList<>();
     private BottomNavigationView bottomNavigationView;
@@ -39,10 +36,10 @@ public class MyCourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_course);
+        getSupportActionBar().hide();
 
         // 初始化 RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
-        switchButton = findViewById(R.id.switchButton);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // 设置适配器
@@ -51,12 +48,6 @@ public class MyCourseActivity extends AppCompatActivity {
         recyclerView.setAdapter(courseAdapter);
 
         loadMyCoursesFromBackend();
-
-        // 切换按钮点击事件
-        switchButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MyCourseActivity.this, TableActivity.class);
-            startActivity(intent);
-        });
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(NavigationUtils.getNavListener(this));
