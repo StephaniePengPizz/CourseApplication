@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import hk.hku.cs.myapplication.models.course.Course;
 
@@ -99,10 +100,6 @@ public class ProfileActivity extends AppCompatActivity {
         courseList = new ArrayList<>();
 
         loadMyCoursesFromBackend();
-
-        // 设置表格布局
-        updateTableLayout();
-
 
 
         checkLoginStatus();
@@ -212,6 +209,7 @@ public class ProfileActivity extends AppCompatActivity {
                     UserInfoResponse userResponse = response.body();
                     if (userResponse.getCode() == 200) {
                         UserInfoResponse.Data userData = userResponse.getData();
+                        // updateTableLayout();
 
                         // 更新UI
                         userNameTextView.setText(userData.getUsername());
@@ -252,80 +250,119 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    private int getMinutesFromDate(Date date) {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")); // 用UTC防止时区偏移
+        calendar.setTime(date);
+        return calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
+    }
+
+
     private void updateTableLayout() {
-        tableLayout.removeAllViews(); // 清空旧表格
+        tableLayout.removeAllViews();
 
-        // 1. 按“星期+时间”组织课程映射
-        Map<String, Map<String, Course>> coursesByDayAndTime = new HashMap<>();
+        String[] timeSlots = {
+                "09:00", "09:30", "10:00", "10:30",
+                "11:00", "11:30", "13:00", "13:30",
+                "14:00", "14:30", "15:00", "15:30",
+                "16:00", "16:30", "17:00", "17:30",
+                "18:00", "18:30", "19:00"
+        };
+        String[] days = {"Mon", "Tue", "Wed", "Thur", "Fri", "Sat"};
+
         SimpleDateFormat sdf24 = new SimpleDateFormat("HH:mm", Locale.US);
-        SimpleDateFormat sdf12 = new SimpleDateFormat("hh:mm a", Locale.US);
+        sdf24.setTimeZone(TimeZone.getTimeZone("UTC"));  // ✅ 加了
 
+        SimpleDateFormat sdf24Full = new SimpleDateFormat("HH:mm:ss", Locale.US);
+        sdf24Full.setTimeZone(TimeZone.getTimeZone("UTC"));  // ✅ 加了
+
+        Map<String, Map<String, String>> scheduleTable = new HashMap<>();
+        for (String day : days) {
+            scheduleTable.put(day, new HashMap<>());
+            for (String slot : timeSlots) {
+                scheduleTable.get(day).put(slot, "");
+            }
+        }
+
+        // 填充表格
         for (Course course : courseList) {
             if (course.getSchedules() != null) {
                 for (Course.Schedule schedule : course.getSchedules()) {
-                    String rawDay = schedule.getDayOfWeek().trim();       // e.g. "Monday"
-                    String day = convertDayToShort(rawDay);               // e.g. "Mon"
-
                     try {
-                        Date start = sdf24.parse(schedule.getStartTime());
-                        Date end = sdf24.parse(schedule.getEndTime());
+                        String rawDay = schedule.getDayOfWeek().trim();
+                        String day = convertDayToShort(rawDay);
 
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(start);
+                        Date startDate = (schedule.getStartTime().length() == 5) ?
+                                sdf24.parse(schedule.getStartTime()) :
+                                sdf24Full.parse(schedule.getStartTime());
+                        Date endDate = (schedule.getEndTime().length() == 5) ?
+                                sdf24.parse(schedule.getEndTime()) :
+                                sdf24Full.parse(schedule.getEndTime());
 
-                        while (!cal.getTime().after(end)) {
-                            String timeSlot = sdf12.format(cal.getTime()); // e.g. "09:00 AM"
+//                        int startMinutes = startDate.getHours() * 60 + startDate.getMinutes();
+//                        int endMinutes = endDate.getHours() * 60 + endDate.getMinutes();
 
-                            if (!coursesByDayAndTime.containsKey(day)) {
-                                coursesByDayAndTime.put(day, new HashMap<>());
+                        int startMinutes = getMinutesFromDate(startDate);
+                        int endMinutes = getMinutesFromDate(endDate);
+
+
+                        for (String slot : timeSlots) {
+                            Date slotDate = sdf24.parse(slot);
+                            // int slotMinutes = slotDate.getHours() * 60 + slotDate.getMinutes();
+                            int slotMinutes = getMinutesFromDate(slotDate);
+
+                            // 🔥 核心判断
+                            if (slotMinutes >= startMinutes && slotMinutes < endMinutes) {
+                                if (scheduleTable.get(day).get(slot).isEmpty()) {  // ⚡ 只在空的地方写
+                                    scheduleTable.get(day).put(slot, course.getCourseName() + "\n@" + course.getPrimaryLocation());
+                                }
                             }
-                            coursesByDayAndTime.get(day).put(timeSlot, course);
-
-                            cal.add(Calendar.HOUR_OF_DAY, 1); // 每节课按小时跨格子
                         }
 
                     } catch (Exception e) {
-                        Log.e("ScheduleError", "时间解析失败: " + e.getMessage());
+                        e.printStackTrace();
                     }
                 }
             }
         }
 
-        // 2. 固定时间和星期几的顺序（注意：时间要和后端数据一致）
-        String[] times = {
-                "09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM",
-                "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM",
-                "06:00 PM", "07:00 PM"
-        };
-        String[] days = {"Mon", "Tue", "Wed", "Thur", "Fri", "Sat"};
-
-        // 3. 添加表头（第一行：Time | Mon | Tue | ...）
+        // 绘制表头
         TableRow headerRow = new TableRow(this);
-        addTextViewToRow(headerRow, "Time"); // true = 加粗
+        addTextViewToRow(headerRow, "Time");
         for (String day : days) {
             addTextViewToRow(headerRow, day);
         }
         tableLayout.addView(headerRow);
 
-        // 4. 添加课程内容行
-        for (String time : times) {
+        // 绘制表格内容
+        for (String slot : timeSlots) {
             TableRow row = new TableRow(this);
-            addTextViewToRow(row, time); // 左边时间列加粗
+            addTextViewToRow(row, slot);
 
             for (String day : days) {
-                if (coursesByDayAndTime.containsKey(day) &&
-                        coursesByDayAndTime.get(day).containsKey(time)) {
-
-                    Course course = coursesByDayAndTime.get(day).get(time);
-                    String display = course.getCourseName() + "\n@" + course.getPrimaryLocation();
-                    addTextViewToRow(row, display);
-                } else {
-                    addTextViewToRow(row, ""); // 空单元格
-                }
+                addTextViewToRow(row, scheduleTable.get(day).get(slot));
             }
-
             tableLayout.addView(row);
         }
+    }
+
+    private String findNearestSlot(Date time, String[] slots) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.US);
+        int targetMinutes = time.getHours() * 60 + time.getMinutes();
+
+        int minDiff = Integer.MAX_VALUE;
+        String closestSlot = slots[0];
+
+        for (String slotStr : slots) {
+            Date slot = sdf.parse(slotStr);
+            int slotMinutes = slot.getHours() * 60 + slot.getMinutes();
+            int diff = Math.abs(slotMinutes - targetMinutes);
+
+            if (diff < minDiff) {
+                minDiff = diff;
+                closestSlot = slotStr;
+            }
+        }
+        return closestSlot;
     }
 
 
@@ -402,6 +439,5 @@ public class ProfileActivity extends AppCompatActivity {
             return time24;
         }
     }
-
 
 }
