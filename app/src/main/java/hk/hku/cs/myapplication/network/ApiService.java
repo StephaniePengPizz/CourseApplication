@@ -10,6 +10,8 @@ import hk.hku.cs.myapplication.models.course.Course;
 import hk.hku.cs.myapplication.models.course.CourseListResponse;
 import hk.hku.cs.myapplication.models.course.CourseMyListResponse;
 import hk.hku.cs.myapplication.models.forum.ForumItem;
+import hk.hku.cs.myapplication.models.forum.ReplyItem;
+import hk.hku.cs.myapplication.models.forum.PostReplyRequest;
 import hk.hku.cs.myapplication.models.response.BaseResponse;
 import hk.hku.cs.myapplication.models.user.LoginResponse;
 import hk.hku.cs.myapplication.models.forum.PostForumRequest;
@@ -89,5 +91,21 @@ public interface ApiService {
     // 发布一条论坛消息
     @POST("/api/v1/main/forum")
     Call<Void> postForumMessage(@Body PostForumRequest request);
+
+    @DELETE("/api/v1/main/forum/{forum_id}")
+    Call<ApiResponse<Void>> deleteForum(@Path("forum_id") int forumId);
+
+
+    // 查询某个帖子下的所有回复
+    @GET("/api/v1/main/forum/reply/{forum_id}")
+    Call<ApiResponse<List<ReplyItem>>> getReplies(@Path("forum_id") int forumId);
+
+    // 发布新回复
+    @POST("/api/v1/main/forum/reply")
+    Call<Void> postReply(@Body PostReplyRequest request);
+
+    // 删除回复
+    @DELETE("/api/v1/main/forum/reply/{reply_id}")
+    Call<ApiResponse<Void>> deleteReply(@Path("reply_id") int replyId);
 
 }
