@@ -1,6 +1,5 @@
 package hk.hku.cs.myapplication.activities.auth;
 
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 
+import hk.hku.cs.myapplication.MyApplication;
 import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.activities.course.PoolCourseActivity;
 import hk.hku.cs.myapplication.models.user.LoginRequest;
@@ -42,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         loginButton = findViewById(R.id.loginButton);
-        tvRegister = findViewById(R.id.tvRegister);
 
         loginButton.setOnClickListener(v -> loginUser());
         tvRegister.setOnClickListener(v -> {
@@ -55,19 +54,18 @@ public class LoginActivity extends AppCompatActivity {
         String username = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
-        // 简单的验证
         if (username.isEmpty()) {
-            etUsername.setError("Please Enter Username");
+            etUsername.setError("请输入用户名");
             return;
         }
 
         if (password.isEmpty()) {
-            etPassword.setError("Please Enter Password");
+            etPassword.setError("请输入密码");
             return;
         }
 
         ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Login in...");
+        progressDialog.setMessage("登录中...");
         progressDialog.show();
 
         LoginRequest request = new LoginRequest(username, password);
@@ -81,11 +79,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
                     Gson gson = new Gson();
-                    String responseJson = gson.toJson(loginResponse);
-                    Log.d("LoginDebug", "响应数据: " + responseJson);
+                    Log.d("LoginDebug", "响应数据: " + gson.toJson(loginResponse));
+
                     if (loginResponse.isSuccess()) {
-                        // 保存登录状态和token
                         saveLoginData(loginResponse);
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, PoolCourseActivity.class));
                         finish();
                     } else {
@@ -99,56 +97,38 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(LoginActivity.this,
-                        "网络错误: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "网络错误: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        // 模拟登录成功
-        //SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        //boolean isRegistered = prefs.contains("email"); // 检查用户是否已注册
-
-        //if (isRegistered) {
-        //    String savedEmail = prefs.getString("email", "");
-         //   String savedPassword = "123456"; // 模拟密码
-
-        //    if (email.equals(savedEmail) && password.equals(savedPassword)) {
-        //        prefs.edit().putBoolean("isLoggedIn", true).apply();
-        //        startActivity(new Intent(this, MainActivity.class));
-        //        finish();
-        //    } else {
-        //        Toast.makeText(this, "邮箱或密码错误", Toast.LENGTH_SHORT).show();
-        //    }
-        //} else {
-        //    Toast.makeText(this, "用户未注册，请先注册", Toast.LENGTH_SHORT).show();
-       // }
     }
+
     private void saveLoginData(LoginResponse response) {
         if (response == null || response.getData() == null) {
-            return; // Or handle the error appropriately
+            return;
         }
 
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        // 保存基本登录状态
         editor.putBoolean("isLoggedIn", true);
-
-        // 保存token信息
         editor.putString("authToken", response.getData().getAccessToken());
         editor.putString("tokenExpireTime", response.getData().getAccessTokenExpireTime());
         editor.putString("sessionUuid", response.getData().getSessionUuid());
 
-        // 保存user信息
         if (response.getData().getUser() != null) {
             User user = response.getData().getUser();
-            editor.putString("username", user.getName());
+            // ✅ 改用 email 保存
+            editor.putString("username", user.getEmail());
             editor.putString("email", user.getEmail());
             editor.putInt("userId", user.getId());
+
+            Log.d("LoginDebug", "user.getEmail() = " + user.getEmail());
+
+            MyApplication.setUsername(user.getEmail()); // ✅ 改成用email保存
+        } else {
+            Log.e("LoginDebug", "user is null");
         }
 
         editor.apply();
-
     }
 }

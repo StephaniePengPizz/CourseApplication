@@ -1,15 +1,13 @@
 package hk.hku.cs.myapplication.models.forum;
 
-public class ForumItem {
+public class ReplyItem {
     private int id;
-    private int course_id;
-    private String title;
+    private int forum_id;
     private String content;
-    private int created_by;
-    private Creator creator;
     private String created_time;
+    private User user;
 
-    public static class Creator {
+    public static class User {
         private String username;
         private String email;
 
@@ -26,19 +24,19 @@ public class ForumItem {
         return id;
     }
 
+    public int getForum_id() {
+        return forum_id;
+    }
+
     public String getContent() {
         return content;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Creator getCreator() {
-        return creator;
-    }
-
-    public String getCreatedTime() {
+    public String getCreated_time() {
         return created_time;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

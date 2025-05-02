@@ -36,6 +36,7 @@ public class MyCourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_course);
+        getSupportActionBar().hide();
 
         // 初始化 RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
