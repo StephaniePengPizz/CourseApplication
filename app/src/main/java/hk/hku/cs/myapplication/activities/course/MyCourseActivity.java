@@ -36,13 +36,10 @@ public class MyCourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_course);
-        getSupportActionBar().hide();
 
-        // 初始化 RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // 设置适配器
         courseAdapter = new MyCourseAdapter(courseList);
         courseAdapter.setOnRemoveCourseClickListener(this::RemoveCourseFromBackend);
         recyclerView.setAdapter(courseAdapter);

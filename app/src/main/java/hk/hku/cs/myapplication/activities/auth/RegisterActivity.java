@@ -78,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         if (!password.equals(confirmPassword)) {
-            etConfirmPassword.setError("两次输入的密码不一致");
+            etConfirmPassword.setError("The passwords entered twice are inconsistent.");
             return;
         }
         registerUser(username, password, email);
@@ -96,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     runOnUiThread(() -> {
-                        Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
                         finish();
                     });
                 } else {
@@ -104,11 +104,11 @@ public class RegisterActivity extends AppCompatActivity {
                         try {
                             String errorBody = response.errorBody().string();
                             Toast.makeText(RegisterActivity.this,
-                                    "错误: " + response.code() + " - " + errorBody,
+                                    "error: " + response.code() + " - " + errorBody,
                                     Toast.LENGTH_LONG).show();
                         } catch (IOException e) {
                             Toast.makeText(RegisterActivity.this,
-                                    "响应解析错误", Toast.LENGTH_SHORT).show();
+                                    "response analyzing errors", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

@@ -55,17 +55,17 @@ public class LoginActivity extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
 
         if (username.isEmpty()) {
-            etUsername.setError("请输入用户名");
+            etUsername.setError("Please enter username");
             return;
         }
 
         if (password.isEmpty()) {
-            etPassword.setError("请输入密码");
+            etPassword.setError("Please enter password");
             return;
         }
 
         ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("登录中...");
+        progressDialog.setMessage("Login...");
         progressDialog.show();
 
         LoginRequest request = new LoginRequest(username, password);
@@ -79,18 +79,18 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
                     Gson gson = new Gson();
-                    Log.d("LoginDebug", "响应数据: " + gson.toJson(loginResponse));
+                    Log.d("LoginDebug", "response: " + gson.toJson(loginResponse));
 
                     if (loginResponse.isSuccess()) {
                         saveLoginData(loginResponse);
-                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Login successfully", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, PoolCourseActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(LoginActivity.this, "登录失败: 用户名或密码错误", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Failed to Login: username or password errors", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "服务器错误: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Server Error: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="选择日期"
+            android:text="choose date"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
 
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="输入日程内容"
+            android:hint="input specific content"
             android:inputType="textMultiLine"
             android:minLines="2" />
 
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="分类（可选）"
+            android:hint="category(optional)"
             android:inputType="text"
             android:minHeight="48dp" />
 
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="优先级"
+            android:text="priority"
             android:textStyle="bold"/>
 
         <Spinner
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:minHeight="48dp"
-            android:text="设置具体时间" />
+            android:text="set the exact time" />
 
         <TimePicker
             android:id="@+id/timePicker"

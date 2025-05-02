@@ -91,7 +91,7 @@ public class CalendarActivity extends AppCompatActivity {
     private void updateCalendar() {
         calendarGrid.removeAllViews();
 
-        monthLabel.setText(currentDate.format(DateTimeFormatter.ofPattern("yyyy年 MM月")));
+        monthLabel.setText(currentDate.format(DateTimeFormatter.ofPattern("yyyy/MM")));
 
         String[] weekdays = {"日", "一", "二", "三", "四", "五", "六"};
         for (String weekday : weekdays) {
@@ -282,8 +282,8 @@ public class CalendarActivity extends AppCompatActivity {
                 timePicker.setVisibility(isChecked ? View.VISIBLE : View.GONE));
 
         builder.setView(dialogView)
-                .setTitle("添加日程")
-                .setPositiveButton("添加", (dialog, which) -> {
+                .setTitle("add arrangement")
+                .setPositiveButton("add", (dialog, which) -> {
                     String schedule = scheduleInput.getText().toString().trim();
                     if (!schedule.isEmpty()) {
                         LocalDate scheduleDate = currentDate.withDayOfMonth(dayPicker.getValue());
@@ -304,7 +304,7 @@ public class CalendarActivity extends AppCompatActivity {
                         updateCalendar();
                     }
                 })
-                .setNegativeButton("取消", null)
+                .setNegativeButton("cancel", null)
                 .show();
     }
 
@@ -314,8 +314,8 @@ public class CalendarActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         if (dateSchedules.isEmpty()) {
-            builder.setTitle(date.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")))
-                    .setMessage("暂无日程")
+            builder.setTitle(date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd日")))
+                    .setMessage("no available arrangement")
                     .setPositiveButton("确定", null)
                     .show();
             return;
@@ -340,16 +340,16 @@ public class CalendarActivity extends AppCompatActivity {
                 sb.append("[").append(schedule.getCategory()).append("] ");
             }
             sb.append(schedule.getContent());
-            sb.append("\n优先级: ").append(schedule.getPriority().toString());
+            sb.append("\npriority: ").append(schedule.getPriority().toString());
 
             scheduleView.setText(sb.toString());
             scheduleList.addView(scheduleView);
         }
 
-        builder.setTitle(date.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")) + "的日程")
+        builder.setTitle(date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) + "arrangement")
                 .setView(scheduleList)
-                .setPositiveButton("确定", null)
-                .setNeutralButton("删除日程", (dialog, which) -> {
+                .setPositiveButton("confirm", null)
+                .setNeutralButton("delete arrangement", (dialog, which) -> {
                     showDeleteScheduleDialog(date, dateSchedules);
                 })
                 .show();
@@ -363,7 +363,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("选择要删除的日程")
+        builder.setTitle("choose arrangement to be deleted")
                 .setItems(items, (dialog, which) -> {
                     dateSchedules.remove(which);
                     if (dateSchedules.isEmpty()) {
@@ -372,7 +372,7 @@ public class CalendarActivity extends AppCompatActivity {
                     saveSchedules();
                     updateCalendar();
                 })
-                .setNegativeButton("取消", null)
+                .setNegativeButton("cancel", null)
                 .show();
     }
     @RequiresApi(api = Build.VERSION_CODES.O)

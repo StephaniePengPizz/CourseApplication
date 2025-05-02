@@ -66,13 +66,13 @@ public class ForumDetailActivity extends AppCompatActivity {
                             inputEditText.setText("");
                             loadReplies();
                         } else {
-                            Toast.makeText(ForumDetailActivity.this, "回复失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForumDetailActivity.this, "Failed to Reply", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(ForumDetailActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForumDetailActivity.this, "Network Errors", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -90,13 +90,13 @@ public class ForumDetailActivity extends AppCompatActivity {
                     replies.addAll(response.body().getData());
                     replyAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(ForumDetailActivity.this, "加载回复失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForumDetailActivity.this, "Failed to load the replies", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<List<ReplyItem>>> call, Throwable t) {
-                Toast.makeText(ForumDetailActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ForumDetailActivity.this, "Network Errors", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -106,16 +106,16 @@ public class ForumDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(ForumDetailActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForumDetailActivity.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
                     loadReplies();
                 } else {
-                    Toast.makeText(ForumDetailActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForumDetailActivity.this, "Failed to delete", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
-                Toast.makeText(ForumDetailActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ForumDetailActivity.this, "Network Errors", Toast.LENGTH_SHORT).show();
             }
         });
     }

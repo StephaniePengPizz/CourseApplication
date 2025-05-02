@@ -12,7 +12,6 @@ import hk.hku.cs.myapplication.models.course.CourseMyListResponse;
 import hk.hku.cs.myapplication.models.forum.ForumItem;
 import hk.hku.cs.myapplication.models.forum.ReplyItem;
 import hk.hku.cs.myapplication.models.forum.PostReplyRequest;
-import hk.hku.cs.myapplication.models.response.BaseResponse;
 import hk.hku.cs.myapplication.models.user.LoginResponse;
 import hk.hku.cs.myapplication.models.forum.PostForumRequest;
 import hk.hku.cs.myapplication.models.user.RegisterRequest;

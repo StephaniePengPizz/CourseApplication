@@ -33,7 +33,6 @@ import hk.hku.cs.myapplication.R;
 import hk.hku.cs.myapplication.adapters.CourseAdapter;
 import hk.hku.cs.myapplication.models.course.CourseListResponse;
 import hk.hku.cs.myapplication.models.course.CourseMyListResponse;
-import hk.hku.cs.myapplication.models.response.BaseResponse;
 import hk.hku.cs.myapplication.network.RetrofitClient;
 import hk.hku.cs.myapplication.utils.NavigationUtils;
 import hk.hku.cs.myapplication.utils.ForumManager;

@@ -60,7 +60,7 @@ public class ForumActivity extends AppCompatActivity {
         sendButton.setOnClickListener(v -> {
             String content = inputEditText.getText().toString().trim();
             if (!content.isEmpty()) {
-                PostForumRequest request = new PostForumRequest(courseId, "留言", content);
+                PostForumRequest request = new PostForumRequest(courseId, "Leave a message", content);
                 apiService.postForumMessage(request).enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
@@ -68,13 +68,13 @@ public class ForumActivity extends AppCompatActivity {
                             inputEditText.setText("");
                             loadForums();
                         } else {
-                            Toast.makeText(ForumActivity.this, "发帖失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForumActivity.this, "Failed To Post", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(ForumActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForumActivity.this, "Network Errors", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
